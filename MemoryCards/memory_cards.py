@@ -1,5 +1,8 @@
 import pygame
 import random
+import os
+from card import Card
+
 print(pygame.ver)
 
 # pygame setup
@@ -10,6 +13,9 @@ clock = pygame.time.Clock() # Setting up game clock for frame rate
 
 # Game loop
 running = True
+card_image = pygame.image.load(r"C:\Users\ADMIN\Desktop\ProjectStudio\50079_Game_Group\MemoryCards\images\number.jpg")
+card = Card(100, 100, 200, 400, card_image)
+card.is_flipped = True
 
 while running:
     # poll for events
@@ -20,6 +26,7 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
+    card.draw(screen)
 
     # RENDER YOUR GAME HERE
 
