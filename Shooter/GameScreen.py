@@ -5,18 +5,26 @@ import sys
 def game_screen(screen):
     
     # Background
-    background = pygame.image.load("FreeAssets/Background/background.png")
+    background_imgage = pygame.image.load("FreeAssets/Background/background2.jpg")
 
     # Player
-    playerImage = pygame.image.load("FreeAssets/PlayerCharacter/playerShip1_blue.png")
+    player_image = pygame.image.load("FreeAssets/PlayerCharacter/playerShip1_blue.png")
     player_x = 450
     player_y = 650
     player_x_change = 0
 
+    # Enemy
+    enemy_image = pygame.image.load("FreeAssets/Enemies/enemyBlack1.png")
+
     def player():
-        screen.blit(playerImage, (player_x, player_y))
+        screen.blit(player_image, (player_x, player_y))
 
+    background_scroll_x = 0
+    background_scroll_y = 0
+    background_y = 0
 
+    
+    
     # Define color
     white = (255, 255, 255)
 
@@ -105,7 +113,7 @@ def game_screen(screen):
         # Set the background to white for now, change it later
         screen.fill(white)
         # Background image
-        screen.blit(background, (0,0))
+        screen.blit(background_imgage, (0,0))
         player()
 
 
@@ -143,7 +151,19 @@ def game_screen(screen):
                     from shooter import main_menu
                     main_menu(screen)
         
+        # Scroll the background vertically
+        background_scroll_y -= 1
+        background_y -= 1
 
+        screen.blit(background_imgage, (background_scroll_x, background_scroll_y))
+        screen.blit(background_imgage, (background_y, background_scroll_y))
+
+        #Reset the background position when it goes off screen
+        if background_scroll_y <= -768:
+            background_scroll_y = 768
+
+        if background_y <= -screen_height:
+            background_y = screen_height
 
 
 
