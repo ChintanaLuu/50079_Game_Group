@@ -12,12 +12,12 @@ clock = pygame.time.Clock()
 windowWidth = 1024
 windowHeight = 768
 
-# Set up font and points counter.
+# MANU: Set up font and points counter.
 #pygame.font.init()
 
 points = 0
+font = pygame.font.SysFont(None,55)
 
-# my_font = pygame.font.SysFont('Game_Fonts/PixelType.ttf', 30)
 
 # def display_score():
 #     current_time = pygame.time.get_ticks()
@@ -45,6 +45,10 @@ game_active = True # For menu later.
 screen = pygame.display.set_mode((windowWidth, windowHeight))
 
 while True:
+    Game_time= pygame.time.get_ticks()
+
+
+
     for event in pygame.event.get():
         
         if event.type == pygame.QUIT:
@@ -67,6 +71,13 @@ while True:
             if not active_mole_position:
                 # Select a random spawn location to generate a mole.
                 active_mole_position = random.choice(list(spawnDict.values()))
+                mole_spawn_time = Game_time
+    #Manu: this condition removes moles if not clicked after 3 seconds 
+    if active_mole_position and (Game_time - mole_spawn_time > 3000):
+            active_mole_position = None
+
+    screen.fill((0, 255, 0))
+
 
     pygame.Surface.fill(screen, (0,255,0))
 
@@ -86,6 +97,10 @@ while True:
         mole_rect = mole_sprite.get_rect(topleft=active_mole_position)  # Update rect after resizing. Positioning/placing from top left pixel of image.
 
         screen.blit(mole_sprite, mole_rect.topleft)
+#Manu: displays the score of moles caught
+    score_value = font.render(f"moles captured: {points}", True,(0,0,0))
+    score_position = score_value.get_rect(topleft = (20,20))
+    screen.blit(score_value,score_position)
 
     # Update display screen.
     pygame.display.update()
