@@ -2,7 +2,7 @@
 import pygame
 from sys import exit
 import random
-# import pygame.freetype
+#from pygame.image import load
 pygame.init()
 
 
@@ -17,17 +17,6 @@ windowHeight = 768
 
 points = 0
 font = pygame.font.SysFont(None,55)
-
-
-# def display_score():
-#     current_time = pygame.time.get_ticks()
-#     score_surf = my_font.render(f"{current_time}", False, (0, 0, 0))
-#     score_rect = score_surf.get_rect()
-#     screen.blit(score_surf, score_rect)
-
-
-# font_surf = my_font.render(f"Moles Caught: {points}", True, (0, 0, 0))
-# font_rect = font_surf.get_rect()
 
 # Spawn setup
 spawnDict = {0:(100, 200), 1:(450, 200), 2:(800, 200), 3:(100, 500), 4:(450, 500), 5:(800, 500)}
@@ -48,8 +37,15 @@ while True:
     Game_time= pygame.time.get_ticks()
 
 
-
     for event in pygame.event.get():
+
+        # Mouse Cursor
+        cursor_surf = pygame.image.load('Game_Art/mallet.png').convert_alpha()
+        cursor_surf = pygame.transform.smoothscale_by(cursor_surf, (0.5, 0.5))
+        cursor_rect = cursor_surf.get_rect(topleft= (0,0))
+
+        cursor = pygame.cursors.Cursor((50,100), cursor_surf) # Whole image size is (288, 152).
+        pygame.mouse.set_cursor(cursor)
         
         if event.type == pygame.QUIT:
             pygame.quit()
