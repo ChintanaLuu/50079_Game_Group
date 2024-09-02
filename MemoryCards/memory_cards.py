@@ -4,7 +4,7 @@ print(pygame.ver)
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720)) # Define the screen size
+screen = pygame.display.set_mode((1024, 768)) # Define the screen size
 pygame.display.set_caption("Memory Match Game") # Set the window caption
 clock = pygame.time.Clock() # Setting up game clock for frame rate
 

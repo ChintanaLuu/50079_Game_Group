@@ -6,4 +6,10 @@ class Card:
         self.image = image # The display image when the card is flipped
         self.is_flipped = False # Flag to check if the card is flipped
         self.is_matched = False # Flag to check if the cards are matched
-        pass
+        
+    """Draw the cards on the screen"""
+    def draw(self, surface):
+        if self.is_flipped or self.is_matched:
+            surface.blit(self.image, self.rect.topleft)
+        else:
+            pygame.draw.rect(surface, (0, 0, 0), self.rect)
