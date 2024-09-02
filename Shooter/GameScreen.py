@@ -1,7 +1,22 @@
 import pygame
 import sys
 
+
 def game_screen(screen):
+    
+    # Background
+    background = pygame.image.load("FreeAssets/Background/background.png")
+
+    # Player
+    playerImage = pygame.image.load("FreeAssets/PlayerCharacter/playerShip1_blue.png")
+    player_x = 450
+    player_y = 650
+    player_x_change = 0
+
+    def player():
+        screen.blit(playerImage, (player_x, player_y))
+
+
     # Define color
     white = (255, 255, 255)
 
@@ -46,6 +61,8 @@ def game_screen(screen):
     exit_menu_button_image = pygame.transform.scale(exit_menu_button_image, (exit_button_width, exit_button_height))
 
 
+
+
     # Get rects for the Resume and Exit buttons
     resume_button_rect = resume_button_image.get_rect()
     exit_menu_button_rect = exit_menu_button_image.get_rect()
@@ -73,7 +90,6 @@ def game_screen(screen):
     resume_text = font.render("Resume", True, white)
     exit_text = font.render("Exit", True, white)
 
-
     # Get the rects for the text to center them on the buttons
     resume_text_rect = resume_text.get_rect(center=resume_button_rect.center)
     exit_text_rect = exit_text.get_rect(center=exit_menu_button_rect.center)
@@ -85,15 +101,37 @@ def game_screen(screen):
     # Main game loop for the game screen
     running = True
     while running:
+
+        # Set the background to white for now, change it later
+        screen.fill(white)
+        # Background image
+        screen.blit(background, (0,0))
+        player()
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            # Player character can only move when oause menu is not shown
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT and show_pause_menu == False:
+                    player_x_change = -3
+                if event.key == pygame.K_RIGHT and show_pause_menu == False:
+                    player_x_change = 3
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    player_x_change = 0
+
+            
+            
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 
                 # Check if the pause button is clicked
                 if pause_button_rect.collidepoint(mouse_pos):
                     show_pause_menu = True
+                    
 
                 # Check if the Resume button is clicked
                 if show_pause_menu and resume_button_rect.collidepoint(mouse_pos):
@@ -101,10 +139,24 @@ def game_screen(screen):
 
                 # Check if the Exit to Main Menu button is clicked
                 if show_pause_menu and exit_menu_button_rect.collidepoint(mouse_pos):
-                    running = False  # For now, just quit the game (this can be changed to go back to the main menu)
+
+                    from shooter import main_menu
+                    main_menu(screen)
         
-        # Set the background to white for now, change it later
-        screen.fill(white)
+
+
+
+
+
+        player_x += player_x_change
+        if player_x <= 0:
+            player_x = 0
+        elif player_x >= 925:
+            player_x = 925
+
+        
+
+        
 
         # Draw the pause button image
         screen.blit(pause_button_image, (pause_button_rect.x, pause_button_rect.y))

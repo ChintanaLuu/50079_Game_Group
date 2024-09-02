@@ -9,27 +9,34 @@ def main_menu(screen):
     # Load button images
     start_game_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
     exit_game_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
+    set_difficulty_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
 
     # Get the size of the button images
     start_game_button_rect = start_game_button_image.get_rect()
     exit_game_button_rect = exit_game_button_image.get_rect()
+    set_difficulty_button_rect = set_difficulty_button_image.get_rect()
 
     # Adjust the button positions
     start_game_button_rect.x = 50
-    start_game_button_rect.y = screen.get_height() - start_game_button_rect.height - 150
+    start_game_button_rect.y = screen.get_height() - start_game_button_rect.height - 170
 
     exit_game_button_rect.x = 50
-    exit_game_button_rect.y = screen.get_height() - exit_game_button_rect.height - 50
+    exit_game_button_rect.y = screen.get_height() - exit_game_button_rect.height - 30
+
+    set_difficulty_button_rect.x = 50
+    set_difficulty_button_rect.y = screen.get_height() - set_difficulty_button_rect.height - 100
 
     # Define font for button text
     font = pygame.font.Font(None, 36)
     text_color = (0, 0, 0)
     start_game_button_text = font.render("Start Game", True, text_color)
-    exit_game_button_text = font.render("Exit", True, text_color)
+    exit_game_button_text = font.render("Back To Menu", True, text_color)
+    set_difficulty_button_text = font.render("Set Difficulty", True, text_color)
 
     # Get the position for the text to be centered on the buttons
     start_game_text_rect = start_game_button_text.get_rect(center=start_game_button_rect.center)
     exit_game_text_rect = exit_game_button_text.get_rect(center=exit_game_button_rect.center)
+    set_difficulty_text_rect = set_difficulty_button_text.get_rect(center=set_difficulty_button_rect.center)
 
     # Main game loop
     running = True
@@ -51,14 +58,17 @@ def main_menu(screen):
         # Draw the button images
         screen.blit(start_game_button_image, (start_game_button_rect.x, start_game_button_rect.y))
         screen.blit(exit_game_button_image, (exit_game_button_rect.x, exit_game_button_rect.y))
+        screen.blit(set_difficulty_button_image, (set_difficulty_button_rect.x, set_difficulty_button_rect.y))
 
         # Update the text rect after changing button positions
         start_game_text_rect = start_game_button_text.get_rect(center=start_game_button_rect.center)
         exit_game_text_rect = exit_game_button_text.get_rect(center=exit_game_button_rect.center)
+        set_difficulty_text_rect = set_difficulty_button_text.get_rect(center=set_difficulty_button_rect.center)
 
         # Draw the text on the buttons
         screen.blit(start_game_button_text, start_game_text_rect)
         screen.blit(exit_game_button_text, exit_game_text_rect)
+        screen.blit(set_difficulty_button_text, set_difficulty_text_rect)
 
         # Update the display
         pygame.display.flip()
