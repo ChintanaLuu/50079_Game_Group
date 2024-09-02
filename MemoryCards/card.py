@@ -1,12 +1,13 @@
 import pygame
 
 class Card:
-    def __init__(self, x, y, width, height, image) -> None:
+    def __init__(self, x, y, width, height, image, identifier) -> None:
         self.rect = pygame.Rect(x, y, width, height) # Defines the card position and size
         self.image = image # The display image when the card is flipped
         self.image = pygame.transform.scale(image, (width, height))  # Resize the image to match the rect
         self.is_flipped = False # Flag to check if the card is flipped
         self.is_matched = False # Flag to check if the cards are matched
+        self.identifier = identifier
         
     """Draw the cards on the screen"""
     def draw(self, surface):
