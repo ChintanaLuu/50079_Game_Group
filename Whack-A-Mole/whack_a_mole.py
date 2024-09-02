@@ -1,6 +1,7 @@
 # Import pygame library
 import pygame
 from sys import exit
+import random
 # import pygame.freetype
 pygame.init()
 
@@ -81,8 +82,14 @@ while True:
    # Make mole clickable. Get rect before resizing.
     mole_rect = mole_sprite.get_rect()
     mole_sprite = pygame.transform.smoothscale_by(mole_sprite, (0.1,0.1))
-    screen.blit(mole_sprite, (500,500))
-    
+
+    # Mole Spawn:
+
+    spawnDict = {0:(100, 200), 1:(450, 200), 2:(800, 200), 3:(100, 500), 4:(450, 500), 5:(800, 500)}
+    for spawn in spawnDict:
+        screen.blit(mole_sprite, random.choice(spawnDict))
+        pygame.time.wait(500) # Mole stays in same place for five seconds.
+
 
     # Update display screen.
     pygame.display.update()
