@@ -8,6 +8,11 @@ pygame.init()
 
 clock = pygame.time.Clock()
 
+# Music
+pygame.mixer.music.load('Game_Sounds/whack_a_mole_music.WAV')
+pygame.mixer.music.play(-1, 0.0, 1000)
+
+
 # Define window size.
 windowWidth = 1024
 windowHeight = 768
@@ -53,12 +58,11 @@ while True:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if active_mole_position and mole_rect.collidepoint(event.pos):
+
+                mole_death = pygame.mixer.Sound('Game_Sounds/mole_squeak_sound.WAV')
+                pygame.mixer.Sound.play(mole_death)
+                
                 points += 1
-
-                # Print in VS terminal.
-                print(f"Moles Caught: {points}")
-
-                #display_score()
 
                 # Reset mole after spawned for 5 seconds.
                 active_mole_position = None
