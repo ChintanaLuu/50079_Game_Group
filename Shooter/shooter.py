@@ -3,8 +3,6 @@ import sys
 from GameScreen import game_screen
 
 def main_menu(screen):
-    # Define color
-    white = (255, 255, 255)
 
     # Load button images
     start_game_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
@@ -53,7 +51,9 @@ def main_menu(screen):
                     running = False
 
         # Set the background to white for now, change later
-        screen.fill(white)
+
+        background_imgage = pygame.image.load("FreeAssets/Background/background2.jpg")
+        screen.blit(background_imgage, (0,0))
 
         # Draw the button images
         screen.blit(start_game_button_image, (start_game_button_rect.x, start_game_button_rect.y))
@@ -73,6 +73,9 @@ def main_menu(screen):
         # Update the display
         pygame.display.flip()
 
+
+
+
     # Quit pygame
     pygame.quit()
     sys.exit()
@@ -91,3 +94,4 @@ if __name__ == "__main__":
 
     # Start the main menu
     main_menu(screen)
+
