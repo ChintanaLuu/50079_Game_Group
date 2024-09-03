@@ -9,7 +9,7 @@ def main_menu(screen):
 
     # Load the music and loop it
     pygame.mixer.music.load("FreeAssets/Sound/SpaceBackground.mp3")
-    pygame.mixer.music.set_volume(1)
+    pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
     # Load the sound for starting the game
