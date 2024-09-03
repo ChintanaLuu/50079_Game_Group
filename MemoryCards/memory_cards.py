@@ -1,6 +1,5 @@
 import pygame
 import random
-import os
 from card import Card
 
 print(pygame.ver)
@@ -11,18 +10,47 @@ screen = pygame.display.set_mode((1024, 768)) # Define the screen size
 pygame.display.set_caption("Memory Match Game") # Set the window caption
 clock = pygame.time.Clock() # Setting up game clock for frame rate
 
+# Load images and assign identifiers
+images = {
+    "apple": pygame.image.load("./MemoryCards/images/apple.jpg"),
+    "banana": pygame.image.load("./MemoryCards/images/banana.jpg"),
+    "blueberry": pygame.image.load("./MemoryCards/images/blueberry.jpg"),
+    "eggplant": pygame.image.load("./MemoryCards/images/eggplant.jpg"),
+    "grape": pygame.image.load("./MemoryCards/images/grape.jpg"),
+    "lime": pygame.image.load("./MemoryCards/images/lime.jpg"),
+    "orange": pygame.image.load("./MemoryCards/images/orange.jpg"),
+    "pumpkin": pygame.image.load("./MemoryCards/images/pumpkin.jpg"),
+}
+
+# Define grid properties
+rows = 4
+cols = 4
+spacing = 20
+card_width = (1024 - (cols + 1) * spacing) / cols # Calculate the card width and height with spacing around them 
+card_height = (768 - (rows + 1) * spacing) / rows
+
+# Create a list of image pairs
+pairs = list(images.items()) * 2  # Multiply by 2 to create pairs
+
+# Shuffle the pairs
+random.shuffle(pairs)
+
+# Generate cards using the shuffled pairs
+cards = []
+for i in range(rows * cols):
+    row = i // cols
+    col = i % cols
+    x = col * (card_width + spacing) + spacing
+    y = row * (card_height + spacing) + spacing
+    identifier, image = pairs[i]
+    card = Card(x, y, card_width, card_height, image, identifier)
+    cards.append(card)
+
+
 # Game loop
 running = True
-card_image = pygame.image.load(r"C:\Users\ADMIN\Desktop\ProjectStudio\50079_Game_Group\MemoryCards\images\apple.jpg")
-card_image2 = pygame.image.load(r"C:\Users\ADMIN\Desktop\ProjectStudio\50079_Game_Group\MemoryCards\images\apple.jpg")
-card_image3 = pygame.image.load(r"C:\Users\ADMIN\Desktop\ProjectStudio\50079_Game_Group\MemoryCards\images\number.jpg")
-card1 = Card(100, 100, 200, 300, card_image, "apple")
-card2 = Card(400, 100, 200, 300, card_image2, "apple")
-card3 = Card(700, 100, 200, 300, card_image3, "number")
-cards = [card1, card2, card3]
 first_flipped_card = None
-# card.is_flipped = True
-
+second_flipped_card = None
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -37,27 +65,35 @@ while running:
                     
                     if first_flipped_card == None:
                         first_flipped_card = card # Store the first flipped card
-                    else:
-                        # Check if the images are matched
-                        screen.fill("purple")
-                        card1.draw(screen)
-                        card2.draw(screen)
-                        card3.draw(screen)
-                        pygame.display.update()
-                        pygame.time.wait(500)  # Pause for half a second to show both cards
-                        if first_flipped_card.identifier == card.identifier:
-                            first_flipped_card.is_matched = True
-                            card.is_matched = True
-                        else:
-                            first_flipped_card.is_flipped = False
-                            card.is_flipped = False  # Flip both cards back over
-                        first_flipped_card = None  # Reset for the next turn
+                    elif second_flipped_card == None:
+                        second_flipped_card = card
+
+        if first_flipped_card and second_flipped_card:
+            screen.fill("purple")
+            for card in cards:
+                card.draw(screen)
+            pygame.display.update()
+            pygame.time.wait(500)  # Briefly show the cards for 1 second
+            if first_flipped_card.identifier == second_flipped_card.identifier:
+                first_flipped_card.is_matched = True
+                second_flipped_card.is_matched = True
+
+                # Remove the matched cards from the list
+                cards.remove(first_flipped_card)
+                cards.remove(second_flipped_card)
+            else:
+                first_flipped_card.is_flipped = False
+                second_flipped_card.is_flipped = False
+
+            # Reset the cards for the next turn
+            first_flipped_card = None
+            second_flipped_card = None
+
         
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
-    card1.draw(screen)
-    card2.draw(screen) 
-    card3.draw(screen)
+    for card in cards:
+        card.draw(screen)
 
 
     # RENDER YOUR GAME HERE
