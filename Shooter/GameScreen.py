@@ -21,36 +21,37 @@ def game_screen(screen):
     # Define color
     white = (255, 255, 255)
 
-    # Load the pause button image
+    # Load the pause button images
     pause_button_image = pygame.image.load("FreeAssets/UI/button/pause_button.png")
+    pause_button_pressed_image = pygame.image.load("FreeAssets/UI/button/pause_button_press.png")
     
-    # Load the menu button image
+    # Load the menu button images
     menu_button_image = pygame.image.load("FreeAssets/UI/button/menu_button.png")
+    menu_button_pressed_image = pygame.image.load("FreeAssets/UI/button/menu_button_press.png")
     
     # Resize the pause button since the asset is too small
     scale = 3
     pause_button_width = pause_button_image.get_width() * scale
     pause_button_height = pause_button_image.get_height() * scale
     pause_button_image = pygame.transform.scale(pause_button_image, (pause_button_width, pause_button_height))
+    pause_button_pressed_image = pygame.transform.scale(pause_button_pressed_image, (pause_button_width, pause_button_height))
     
-    # Get the size of the resized button image
-    pause_button_rect = pause_button_image.get_rect()
-    
-    # Adjust the pause button position
-    pause_button_rect.x = 25
-    pause_button_rect.y = 25
+    # Resize the menu buttons
+    menu_button_width = menu_button_image.get_width() * 2
+    menu_button_height = menu_button_image.get_height() * 2
+    resume_button_image = pygame.transform.scale(menu_button_image, (menu_button_width, menu_button_height))
+    resume_button_pressed_image = pygame.transform.scale(menu_button_pressed_image, (menu_button_width, menu_button_height))
+    exit_menu_button_image = resume_button_image
+    exit_menu_button_pressed_image = resume_button_pressed_image
 
-    # Prepare the Resume and Exit to Main Menu buttons (but don't display them yet)
-    resume_button_image = pygame.transform.scale(menu_button_image, (menu_button_image.get_width() * 2, menu_button_image.get_height() * 2))
-    exit_menu_button_image = pygame.transform.scale(menu_button_image, (menu_button_image.get_width() * 2, menu_button_image.get_height() * 2))
-    
-    
-    
-    # Get rects for the Resume and Exit buttons
+    # Get rects for the buttons
+    pause_button_rect = pause_button_image.get_rect()
     resume_button_rect = resume_button_image.get_rect()
-    exit_menu_button_rect = exit_menu_button_image.get_rect()
+    exit_menu_button_rect = resume_button_image.get_rect()
 
     # Set the buttons' positions (center of the screen)
+    pause_button_rect.x = 25
+    pause_button_rect.y = 25
     resume_button_rect.centerx = screen.get_rect().centerx
     exit_menu_button_rect.centerx = screen.get_rect().centerx
 
@@ -60,6 +61,9 @@ def game_screen(screen):
 
     # Show and hide the Resume and Exit buttons
     show_pause_menu = False
+    pause_button_pressed = False
+    resume_button_pressed = False
+    exit_menu_button_pressed = False
 
     # Define font for the button text
     font = pygame.font.Font(None, 36)
@@ -74,7 +78,6 @@ def game_screen(screen):
 
     scroll_y = 0
     scroll_speed = 0.1
-    show_pause_menu = False
     running = True
 
     while running:
@@ -86,22 +89,39 @@ def game_screen(screen):
             if not show_pause_menu:
                 player.handle_input(event)
 
+            # Detect mouse button down and switch to the pressed images
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
 
                 # Check if the pause button is clicked
                 if pause_button_rect.collidepoint(mouse_pos):
+                    pause_button_pressed = True
+
+                # Check if the Resume button is clicked
+                if show_pause_menu and resume_button_rect.collidepoint(mouse_pos):
+                    resume_button_pressed = True
+
+                # Check if the Exit button is clicked
+                if show_pause_menu and exit_menu_button_rect.collidepoint(mouse_pos):
+                    exit_menu_button_pressed = True
+
+            # Detect mouse button up and switch back to the normal images
+            if event.type == pygame.MOUSEBUTTONUP:
+                if pause_button_pressed:
+                    pause_button_pressed = False
                     show_pause_menu = True
                     scroll_speed = 0
-                # Check if the Resume button is clicked    
-                if show_pause_menu and resume_button_rect.collidepoint(mouse_pos):
+
+                if resume_button_pressed:
+                    resume_button_pressed = False
                     show_pause_menu = False
                     scroll_speed = 0.1
-                # Check if the Exit to Main Menu button is clicked
-                if show_pause_menu and exit_menu_button_rect.collidepoint(mouse_pos):
+
+                if exit_menu_button_pressed:
+                    exit_menu_button_pressed = False
                     from shooter import main_menu
                     main_menu(screen)
-        
+
         # Update player position if the game is not paused
         if not show_pause_menu:
             player.update_position()
@@ -131,12 +151,27 @@ def game_screen(screen):
 
         # Draw player to the screen
         player.draw()
-        
-        # Draw buttons to the screen
-        screen.blit(pause_button_image, pause_button_rect)
+
+        # Draw pause button based on the pressed state
+        if pause_button_pressed:
+            screen.blit(pause_button_pressed_image, pause_button_rect)
+        else:
+            screen.blit(pause_button_image, pause_button_rect)
+
         if show_pause_menu:
-            screen.blit(resume_button_image, resume_button_rect)
-            screen.blit(exit_menu_button_image, exit_menu_button_rect)
+            # Draw resume button based on the pressed state
+            if resume_button_pressed:
+                screen.blit(resume_button_pressed_image, resume_button_rect)
+            else:
+                screen.blit(resume_button_image, resume_button_rect)
+            
+            # Draw exit menu button based on the pressed state
+            if exit_menu_button_pressed:
+                screen.blit(exit_menu_button_pressed_image, exit_menu_button_rect)
+            else:
+                screen.blit(exit_menu_button_image, exit_menu_button_rect)
+
+            # Draw text on the buttons
             screen.blit(resume_text, resume_text_rect)
             screen.blit(exit_text, exit_text_rect)
 
@@ -144,6 +179,7 @@ def game_screen(screen):
 
     pygame.quit()
     sys.exit()
+
 
 
 
