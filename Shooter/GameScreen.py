@@ -5,6 +5,13 @@ import sys
 
 def game_screen(screen):
 
+    # Initialize the mixer for music
+    pygame.mixer.init()
+    
+    # Load the music and loop it
+   # pygame.mixer.music.load("FreeAssets/Sound/InGameMusic.wav")
+    pygame.mixer.music.play(-1)
+
     # Background
     background_imgage = pygame.image.load("FreeAssets/Background/background2.jpg")
     background_height = background_imgage.get_height()
@@ -96,6 +103,7 @@ def game_screen(screen):
                 # Check if the pause button is clicked
                 if pause_button_rect.collidepoint(mouse_pos):
                     pause_button_pressed = True
+                    pygame.mixer.music.stop()
 
                 # Check if the Resume button is clicked
                 if show_pause_menu and resume_button_rect.collidepoint(mouse_pos):

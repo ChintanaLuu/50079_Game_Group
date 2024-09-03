@@ -4,6 +4,16 @@ from GameScreen import game_screen
 
 def main_menu(screen):
 
+    # Initialize the mixer for music
+    pygame.mixer.init()
+
+    # Load the music and loop it
+    pygame.mixer.music.load("FreeAssets/Sound/SpaceBackground.mp3")
+    pygame.mixer.music.play(-1)
+
+    # Load the sound for starting the game
+    start_game_sound = pygame.mixer.Sound("FreeAssets/Sound/StartGameSound.wav")
+
     # Load button images
     start_game_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
     exit_game_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
@@ -46,6 +56,8 @@ def main_menu(screen):
                 mouse_pos = pygame.mouse.get_pos()
                 if start_game_button_rect.collidepoint(mouse_pos):
                     # Switch to the game screen when Start Game button is clicked
+                    pygame.mixer.music.stop()
+                    start_game_sound.play()
                     game_screen(screen)
                 if exit_game_button_rect.collidepoint(mouse_pos):
                     running = False
