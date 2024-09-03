@@ -5,6 +5,8 @@ import random
 #from pygame.image import load
 pygame.init()
 
+from sprites import Mole
+
 clock = pygame.time.Clock()
 
 # Music
@@ -17,7 +19,6 @@ from mallet_cursor import draw_cursor
 # Sprites
 from draw_assets import draw_holes
 
-
 # Define window size.
 windowWidth = 1024
 windowHeight = 768
@@ -28,7 +29,7 @@ font = pygame.font.SysFont(None,55)
 
 # Spawn setup
 spawnDict = {0:(100, 200), 1:(450, 200), 2:(800, 200), 3:(100, 500), 4:(450, 500), 5:(800, 500)}
-#moles_sprites = pygame.sprite.Group()
+#moles_sprites = pygame.sprite.GroupSingle()
 
 active_mole_position = None
 mole_spawn_time = 0
@@ -37,6 +38,8 @@ mole_spawn_time = 0
 mole_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(mole_timer, 5000) # Set timer to every 5 seconds.    
 game_active = True # For menu later.
+start_ticks = pygame.time.get_ticks()
+game_time_limit = 15
 
 # Create app window.
 screen = pygame.display.set_mode((windowWidth, windowHeight))
@@ -49,6 +52,13 @@ while True:
 
         draw_cursor()
         
+        # Draw sprites using groups.
+        # mole = Mole()
+        # moleGroup =
+        # moleGroup.add(mole)
+        # mole.draw(screen)
+        ###
+
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
@@ -92,6 +102,21 @@ while True:
     score_value = font.render(f"moles captured: {points}", True,(0,0,0))
     score_position = score_value.get_rect(topleft = (20,20))
     screen.blit(score_value,score_position)
+
+
+    # Display time left.
+    seconds = ((pygame.time.get_ticks() - start_ticks)/1000) # Displays the decimals...
+    time_left_surf = font.render(f"Time left: {seconds}", True,(0,0,0))
+    time_left_rect = time_left_surf.get_rect(topleft = (700,20))
+    screen.blit(time_left_surf,time_left_rect)
+
+
+    if seconds > game_time_limit:
+        pygame.Surface.fill(0,255,0) # STOP BLITTING THE OTHER THINGS!
+        final_score_surf = font.render("Final Score = {points}")
+        final_score_rect = final_score_surf.get_rect(midbottom = (0,0))
+        #pygame.time.wait(5000)
+        #break # Immediately exits out of the application window 
 
     # Update display screen.
     pygame.display.update()
