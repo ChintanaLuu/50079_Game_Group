@@ -31,15 +31,16 @@ font = pygame.font.SysFont(None,55)
 spawnDict = {0:(100, 200), 1:(450, 200), 2:(800, 200), 3:(100, 500), 4:(450, 500), 5:(800, 500)}
 #moles_sprites = pygame.sprite.GroupSingle()
 
+# Mole Setup
 active_mole_position = None
 mole_spawn_time = 0
-
-# Timer
 mole_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(mole_timer, 5000) # Set timer to every 5 seconds.    
+pygame.time.set_timer(mole_timer, 2000) # Set timer to every 2 seconds.    
+
+# Game Timer Setup
 game_active = True # For menu later.
 start_ticks = pygame.time.get_ticks()
-game_time_limit = 15
+game_time_limit = 10
 
 # Create app window.
 screen = pygame.display.set_mode((windowWidth, windowHeight))
@@ -67,11 +68,9 @@ while True:
             if active_mole_position and mole_rect.collidepoint(event.pos):
 
                 mole_death = pygame.mixer.Sound('Game_Sounds/mole_squeak_sound.WAV')
-                pygame.mixer.Sound.play(mole_death)
-                
+                pygame.mixer.Sound.play(mole_death)                
                 points += 1
 
-                # Reset mole after spawned for 5 seconds.
                 active_mole_position = None
 
         if event.type == mole_timer and game_active:
@@ -79,9 +78,10 @@ while True:
                 # Select a random spawn location to generate a mole.
                 active_mole_position = random.choice(list(spawnDict.values()))
                 mole_spawn_time = Game_time
-    #Manu: this condition removes moles if not clicked after 3 seconds 
-    if active_mole_position and (Game_time - mole_spawn_time > 3000):
-            active_mole_position = None
+
+        #Manu: this condition removes moles if not clicked after 3 seconds 
+        if active_mole_position and (Game_time - mole_spawn_time > 3000):
+                active_mole_position = None
 
 
     pygame.Surface.fill(screen, (0,255,0))
@@ -112,11 +112,22 @@ while True:
 
 
     if seconds > game_time_limit:
-        pygame.Surface.fill(0,255,0) # STOP BLITTING THE OTHER THINGS!
-        final_score_surf = font.render("Final Score = {points}")
-        final_score_rect = final_score_surf.get_rect(midbottom = (0,0))
-        #pygame.time.wait(5000)
-        #break # Immediately exits out of the application window 
+        # gameactive set to false to stop mole spawning.
+        game_active = False
+        pygame.mixer.music.stop()
+
+        # Draw green over screen.
+        pygame.Surface.fill(screen, (0,255,0))
+
+        # Display final score.
+        font = pygame.font.SysFont(None,80)
+        final_score_surf = font.render(f"Times Up! Final Score: {points}", True, (0,0,0))
+        final_score_rect = final_score_surf.get_rect(topleft = (150,300))
+        screen.blit(final_score_surf, final_score_rect)
+
+        #break # Exits application immediately.
+        
+    
 
     # Update display screen.
     pygame.display.update()
