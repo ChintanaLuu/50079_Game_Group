@@ -9,10 +9,23 @@ def main_menu(screen):
 
     # Load the music and loop it
     pygame.mixer.music.load("FreeAssets/Sound/SpaceBackground.mp3")
+    pygame.mixer.music.set_volume(1)
     pygame.mixer.music.play(-1)
 
     # Load the sound for starting the game
     start_game_sound = pygame.mixer.Sound("FreeAssets/Sound/StartGameSound.wav")
+    start_game_sound.set_volume(0.3)
+
+    #Load the game logo
+    game_logo_image = pygame.image.load("FreeAssets/Background/gameLogo.PNG")
+    logo_width = game_logo_image.get_width() // 2
+    logo_height = game_logo_image.get_height() // 2
+    game_logo_image = pygame.transform.scale(game_logo_image, (logo_width, logo_height))
+    
+    game_logo_image_rect = game_logo_image.get_rect()
+    game_logo_image_rect.centerx = screen.get_rect().centerx
+    game_logo_image_rect.centery = screen.get_rect().centery - 100
+    
 
     # Load button images
     start_game_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
@@ -76,6 +89,9 @@ def main_menu(screen):
         start_game_text_rect = start_game_button_text.get_rect(center=start_game_button_rect.center)
         exit_game_text_rect = exit_game_button_text.get_rect(center=exit_game_button_rect.center)
         set_difficulty_text_rect = set_difficulty_button_text.get_rect(center=set_difficulty_button_rect.center)
+
+        # Draw the game logo
+        screen.blit(game_logo_image, game_logo_image_rect)
 
         # Draw the text on the buttons
         screen.blit(start_game_button_text, start_game_text_rect)

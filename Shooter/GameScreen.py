@@ -9,8 +9,13 @@ def game_screen(screen):
     pygame.mixer.init()
     
     # Load the music and loop it
-   # pygame.mixer.music.load("FreeAssets/Sound/InGameMusic.wav")
+    pygame.mixer.music.load("FreeAssets/Sound/InGameMusic.wav")
+    pygame.mixer.music.set_volume(0.1)
     pygame.mixer.music.play(-1)
+
+    # Load the button click sound
+    button_click_sound = pygame.mixer.Sound("FreeAssets/Sound/ButtonClick.wav")
+    button_click_sound.set_volume(0.1)
 
     # Background
     background_imgage = pygame.image.load("FreeAssets/Background/background2.jpg")
@@ -103,15 +108,20 @@ def game_screen(screen):
                 # Check if the pause button is clicked
                 if pause_button_rect.collidepoint(mouse_pos):
                     pause_button_pressed = True
-                    pygame.mixer.music.stop()
+                    pygame.mixer.music.pause()
+                    button_click_sound.play()
 
                 # Check if the Resume button is clicked
                 if show_pause_menu and resume_button_rect.collidepoint(mouse_pos):
                     resume_button_pressed = True
+                    button_click_sound.play()
+                    pygame.mixer.music.unpause()
+                    
 
                 # Check if the Exit button is clicked
                 if show_pause_menu and exit_menu_button_rect.collidepoint(mouse_pos):
                     exit_menu_button_pressed = True
+                    button_click_sound.play()
 
             # Detect mouse button up and switch back to the normal images
             if event.type == pygame.MOUSEBUTTONUP:
