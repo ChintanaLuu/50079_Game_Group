@@ -143,6 +143,7 @@ def game_screen(screen):
         # Update player position if the game is not paused
         if not show_pause_menu:
             player.update_position()
+            player.update_bullets()
 
             scroll_y += scroll_speed
             if scroll_y >= background_height:
@@ -208,6 +209,7 @@ class Player:
         self.y = 650
         self.x_change = 0
         self.screen = screen
+        self.bullets = []
 
     def handle_input(self, event):
         if event.type == pygame.KEYDOWN:
@@ -215,6 +217,12 @@ class Player:
                 self.x_change = -0.5
             elif event.key == pygame.K_RIGHT:
                 self.x_change = 0.5
+            elif event.key == pygame.K_j:
+                bullet_x = self.x + (self.image.get_width() // 2) - 10
+                bullet_y = self.y
+                self.bullets.append(Bullet(self.screen, bullet_x, bullet_y))
+
+
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 self.x_change = 0
@@ -226,9 +234,17 @@ class Player:
         elif self.x >= 925:
             self.x = 925
 
+
+    def update_bullets(self):
+        for bullet in self.bullets[:]:
+            bullet.move()
+            if bullet.is_off_screen():
+                self.bullets.remove(bullet)
+
     def draw(self):
         self.screen.blit(self.image, (self.x, self.y))
-
+        for bullet in self.bullets:
+            bullet.draw()
 
 
 class Enemy:
@@ -246,3 +262,25 @@ class Enemy:
 
     def is_off_screen(self):
         return self.y >= self.screen.get_height()
+
+
+
+class Bullet:
+    def __init__(self, screen, x, y):
+        self.image = pygame.image.load("FreeAssets/Bullets/4.png")
+        bullet_width = self.image.get_width() // 2
+        bullet_height = self.image.get_height() // 2
+        self.image = pygame.transform.scale(self.image, (bullet_width, bullet_height))
+        self.x = x
+        self.y = y
+        self.screen = screen
+        self.speed = -0.5
+
+    def move(self):
+        self.y += self.speed
+
+    def draw(self):
+        self.screen.blit(self.image, (self.x, self.y))
+
+    def is_off_screen(self):
+        return self.y < -self.image.get_height()    
