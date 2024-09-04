@@ -40,7 +40,7 @@ pygame.time.set_timer(mole_timer, 2000) # Set timer to every 2 seconds.
 # Game Timer Setup
 game_active = True # For menu later.
 start_ticks = pygame.time.get_ticks()
-game_time_limit = 10
+game_time_limit = 10000 # 10
 
 # Create app window.
 screen = pygame.display.set_mode((windowWidth, windowHeight))
@@ -54,7 +54,7 @@ while True:
         draw_cursor()
         
         # Draw sprites using groups.
-        # mole = Mole()
+        #mole = Mole()
         # moleGroup =
         # moleGroup.add(mole)
         # mole.draw(screen)
@@ -84,49 +84,48 @@ while True:
                 active_mole_position = None
 
 
-    pygame.Surface.fill(screen, (0,255,0))
-
-    draw_holes(spawnDict, screen)
-
-    # Draw the mole at the selected random location.
-    if active_mole_position:
-        mole_sprite = pygame.image.load('Game_Art/R (9).png').convert_alpha()
-        # Get rect and resize mole sprite
-        mole_rect = mole_sprite.get_rect(topleft=active_mole_position)
-        mole_sprite = pygame.transform.smoothscale_by(mole_sprite, (0.1, 0.1))
-        mole_rect = mole_sprite.get_rect(topleft=active_mole_position)  # Update rect after resizing. Positioning/placing from top left pixel of image.
-
-        screen.blit(mole_sprite, mole_rect.topleft)
-
-#Manu: displays the score of moles caught
-    score_value = font.render(f"moles captured: {points}", True,(0,0,0))
-    score_position = score_value.get_rect(topleft = (20,20))
-    screen.blit(score_value,score_position)
-
-
-    # Display time left.
-    seconds = ((pygame.time.get_ticks() - start_ticks)/1000) # Displays the decimals...
-    time_left_surf = font.render(f"Time left: {seconds}", True,(0,0,0))
-    time_left_rect = time_left_surf.get_rect(topleft = (700,20))
-    screen.blit(time_left_surf,time_left_rect)
-
-
-    if seconds > game_time_limit:
-        # gameactive set to false to stop mole spawning.
-        game_active = False
-        pygame.mixer.music.stop()
-
-        # Draw green over screen.
         pygame.Surface.fill(screen, (0,255,0))
 
-        # Display final score.
-        font = pygame.font.SysFont(None,80)
-        final_score_surf = font.render(f"Times Up! Final Score: {points}", True, (0,0,0))
-        final_score_rect = final_score_surf.get_rect(topleft = (150,300))
-        screen.blit(final_score_surf, final_score_rect)
+        draw_holes(spawnDict, screen)
 
-        #break # Exits application immediately.
-        
+        # Draw the mole at the selected random location.
+        if active_mole_position:
+            mole_sprite = pygame.image.load('Game_Art/R (9).png').convert_alpha()
+            # Get rect and resize mole sprite
+            mole_rect = mole_sprite.get_rect(topleft=active_mole_position)
+            mole_sprite = pygame.transform.smoothscale_by(mole_sprite, (0.1, 0.1))
+            mole_rect = mole_sprite.get_rect(topleft=active_mole_position)  # Update rect after resizing. Positioning/placing from top left pixel of image.
+
+            screen.blit(mole_sprite, mole_rect.topleft)
+
+    #Manu: displays the score of moles caught
+        score_value = font.render(f"moles captured: {points}", True,(0,0,0))
+        score_position = score_value.get_rect(topleft = (20,20))
+        screen.blit(score_value,score_position)
+
+
+        seconds = (game_time_limit - Game_time)/1000
+        time_left_surf = font.render(f"Time: {seconds}", True,(0,0,0))
+        time_left_rect = time_left_surf.get_rect(topleft = (700,20))
+        screen.blit(time_left_surf,time_left_rect)
+
+
+        #if seconds > game_time_limit:
+        if seconds < 0:
+            # gameactive set to false to stop mole spawning.
+            game_active = False
+            pygame.mixer.music.stop()
+
+            # Draw green over screen.
+            pygame.Surface.fill(screen, (0,255,0))
+
+            # Display final score.
+            font = pygame.font.SysFont(None,80)
+            final_score_surf = font.render(f"Times Up! Final Score: {points}", True, (0,0,0))
+            final_score_rect = final_score_surf.get_rect(topleft = (150,300))
+            screen.blit(final_score_surf, final_score_rect)
+            #pygame.time.wait(5000)
+            
     
 
     # Update display screen.
