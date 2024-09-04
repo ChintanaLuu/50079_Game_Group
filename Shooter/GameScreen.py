@@ -30,6 +30,9 @@ def game_screen(screen):
     last_enemy_spawn_time = pygame.time.get_ticks()
     enemy_speed = 0.2
 
+    # Score
+    score = 0
+
     # Define color
     white = (255, 255, 255)
 
@@ -161,6 +164,14 @@ def game_screen(screen):
                 if enemy.is_off_screen():
                     enemies.remove(enemy)
 
+            for bullet in player.bullets[:]:
+                for enemy in enemies[:]:
+                    if bullet.collides_with(enemy):
+                        player.bullets.remove(bullet)
+                        enemies.remove(enemy)
+                        score += 5
+                        break
+
         # Draw Scrolling background
         screen.blit(background_imgage, (0, scroll_y - background_height))
         screen.blit(background_imgage, (0, scroll_y))
@@ -193,6 +204,9 @@ def game_screen(screen):
             # Draw text on the buttons
             screen.blit(resume_text, resume_text_rect)
             screen.blit(exit_text, exit_text_rect)
+        
+        score_text = font.render(f"Score: {score}", True, white)
+        screen.blit(score_text, (40, screen.get_height() - 40))     
 
         pygame.display.flip()
 
@@ -210,6 +224,7 @@ class Player:
         self.x_change = 0
         self.screen = screen
         self.bullets = []
+        self.bullet_sound = pygame.mixer.Sound("FreeAssets/Sound/shootingSound.wav")
 
     def handle_input(self, event):
         if event.type == pygame.KEYDOWN:
@@ -221,6 +236,8 @@ class Player:
                 bullet_x = self.x + (self.image.get_width() // 2) - 10
                 bullet_y = self.y
                 self.bullets.append(Bullet(self.screen, bullet_x, bullet_y))
+                self.bullet_sound.set_volume(0.2)
+                self.bullet_sound.play()
 
 
         elif event.type == pygame.KEYUP:
@@ -245,6 +262,7 @@ class Player:
         self.screen.blit(self.image, (self.x, self.y))
         for bullet in self.bullets:
             bullet.draw()
+            
 
 
 class Enemy:
@@ -262,7 +280,9 @@ class Enemy:
 
     def is_off_screen(self):
         return self.y >= self.screen.get_height()
-
+    
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.image.get_width(), self.image.get_height())
 
 
 class Bullet:
@@ -282,5 +302,12 @@ class Bullet:
     def draw(self):
         self.screen.blit(self.image, (self.x, self.y))
 
+
     def is_off_screen(self):
         return self.y < -self.image.get_height()    
+    
+    def collides_with(self, enemy):
+        return self.get_rect().colliderect(enemy.get_rect())
+
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.image.get_width(), self.image.get_height())
