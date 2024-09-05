@@ -3,7 +3,7 @@ import pygame
 import sys
 
 
-def game_screen(screen):
+def game_screen(screen, difficulty):
 
     # Initialize the mixer for music
     pygame.mixer.init()
@@ -37,6 +37,14 @@ def game_screen(screen):
     enemy_spawn_interval = 1500
     last_enemy_spawn_time = pygame.time.get_ticks()
     enemy_speed = 0.2
+
+    if difficulty == "Easy Mode":
+        enemy_speed = 0.2
+    elif difficulty == "Normal Mode":
+        player.health = 3
+    elif difficulty == "Hard Mode":
+        player.health = 2
+
 
     # Score
     score = 0
@@ -170,7 +178,7 @@ def game_screen(screen):
 
                 if restart_button_pressed:
                     restart_button_pressed = False
-                    game_screen(screen)
+                    game_screen(screen,difficulty)
 
         # Update player position if the game is not paused
         if not show_pause_menu and not show_restart_button:
@@ -185,8 +193,17 @@ def game_screen(screen):
             current_time = pygame.time.get_ticks()
             if current_time - last_enemy_spawn_time > enemy_spawn_interval:
                 enemy_x = random.randint(0, screen.get_width() - 64)
-                enemies.append(Enemy(screen, enemy_x, -64))
+
+                if difficulty == "Normal Mode":
+                    enemy_speed = random.uniform(0.3, 0.5)
+                    enemy_spawn_interval = random.randint(700, 1300)
+                elif difficulty == "Hard Mode":
+                    enemy_speed = random.uniform(0.4, 0.6)
+                    enemy_spawn_interval = random.randint(500, 1200)
+            
+                enemies.append(Enemy(screen, enemy_x, -64, enemy_speed))
                 last_enemy_spawn_time = current_time
+
 
             for enemy in enemies[:]:
                 enemy.move(enemy_speed)
@@ -202,7 +219,12 @@ def game_screen(screen):
                     if bullet.collides_with(enemy):
                         player.bullets.remove(bullet)
                         enemies.remove(enemy)
-                        score += 5
+                        if difficulty == "Easy Mode":
+                            score += 5
+                        elif difficulty == "Normal Mode":
+                            score += 10
+                        elif difficulty == "Hard Mode":
+                            score += 15
                         break
 
 
@@ -336,11 +358,12 @@ class Player:
 
 
 class Enemy:
-    def __init__(self, screen, x, y):
+    def __init__(self, screen, x, y, speed):
         self.image = pygame.image.load("FreeAssets/Enemies/enemyBlack1.png")
         self.x = x
         self.y = y
         self.screen = screen
+        self.speed = speed
 
     def move(self, speed):
         self.y += speed
