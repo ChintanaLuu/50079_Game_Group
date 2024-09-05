@@ -17,6 +17,14 @@ def game_screen(screen):
     button_click_sound = pygame.mixer.Sound("FreeAssets/Sound/ButtonClick.wav")
     button_click_sound.set_volume(0.1)
 
+    # Load the get hit sound
+    hit_sound = pygame.mixer.Sound("FreeAssets/Sound/crashSound.wav")
+    hit_sound.set_volume(0.05)
+
+    # Load the game over sound
+    game_over_sound = pygame.mixer.Sound("FreeAssets/Sound/gameOverSound.wav")
+    game_over_sound.set_volume(0.03)
+
     # Background
     background_imgage = pygame.image.load("FreeAssets/Background/background2.jpg")
     background_height = background_imgage.get_height()
@@ -34,6 +42,7 @@ def game_screen(screen):
     score = 0
 
     # Define color
+    black = (0, 0, 0)
     white = (255, 255, 255)
 
     # Load the pause button images
@@ -58,38 +67,48 @@ def game_screen(screen):
     resume_button_pressed_image = pygame.transform.scale(menu_button_pressed_image, (menu_button_width, menu_button_height))
     exit_menu_button_image = resume_button_image
     exit_menu_button_pressed_image = resume_button_pressed_image
+    restart_button_image = resume_button_image
+    restart_button_pressed_image = resume_button_pressed_image
 
     # Get rects for the buttons
     pause_button_rect = pause_button_image.get_rect()
     resume_button_rect = resume_button_image.get_rect()
     exit_menu_button_rect = resume_button_image.get_rect()
+    restart_button_rect = restart_button_image.get_rect()
 
     # Set the buttons' positions (center of the screen)
     pause_button_rect.x = 25
     pause_button_rect.y = 25
     resume_button_rect.centerx = screen.get_rect().centerx
     exit_menu_button_rect.centerx = screen.get_rect().centerx
+    restart_button_rect.centerx = screen.get_rect().centerx
+    restart_button_rect.centery = screen.get_rect().centery
 
     # Position the Resume button a little bit above the Exit button
     resume_button_rect.centery = screen.get_rect().centery - 50
     exit_menu_button_rect.centery = screen.get_rect().centery + 50
+
 
     # Show and hide the Resume and Exit buttons
     show_pause_menu = False
     pause_button_pressed = False
     resume_button_pressed = False
     exit_menu_button_pressed = False
+    restart_button_pressed = False
+    show_restart_button = False
 
     # Define font for the button text
     font = pygame.font.Font(None, 36)
     
     # Render the text for the buttons
-    resume_text = font.render("Resume", True, white)
-    exit_text = font.render("Exit", True, white)
+    resume_text = font.render("Resume", True, black)
+    exit_text = font.render("Exit", True, black)
+    restart_text = font.render("Restart", True, black)
 
     # Get the rects for the text to center them on the buttons
     resume_text_rect = resume_text.get_rect(center=resume_button_rect.center)
     exit_text_rect = exit_text.get_rect(center=exit_menu_button_rect.center)
+    restart_text_rect = restart_text.get_rect(center=restart_button_rect.center)
 
     scroll_y = 0
     scroll_speed = 0.1
@@ -101,7 +120,7 @@ def game_screen(screen):
                 running = False
 
             # Only allow player movement when the game is not paused
-            if not show_pause_menu:
+            if not show_pause_menu and not show_restart_button:
                 player.handle_input(event)
 
             # Detect mouse button down and switch to the pressed images
@@ -109,7 +128,7 @@ def game_screen(screen):
                 mouse_pos = pygame.mouse.get_pos()
 
                 # Check if the pause button is clicked
-                if pause_button_rect.collidepoint(mouse_pos):
+                if not show_restart_button and pause_button_rect.collidepoint(mouse_pos):
                     pause_button_pressed = True
                     pygame.mixer.music.pause()
                     button_click_sound.play()
@@ -125,6 +144,12 @@ def game_screen(screen):
                 if show_pause_menu and exit_menu_button_rect.collidepoint(mouse_pos):
                     exit_menu_button_pressed = True
                     button_click_sound.play()
+
+                # Check if the Restart button is clicked
+                if show_restart_button and restart_button_rect.collidepoint(mouse_pos):
+                    restart_button_pressed = True
+                    button_click_sound.play()
+
 
             # Detect mouse button up and switch back to the normal images
             if event.type == pygame.MOUSEBUTTONUP:
@@ -143,8 +168,12 @@ def game_screen(screen):
                     from shooter import main_menu
                     main_menu(screen)
 
+                if restart_button_pressed:
+                    restart_button_pressed = False
+                    game_screen(screen)
+
         # Update player position if the game is not paused
-        if not show_pause_menu:
+        if not show_pause_menu and not show_restart_button:
             player.update_position()
             player.update_bullets()
 
@@ -163,6 +192,10 @@ def game_screen(screen):
                 enemy.move(enemy_speed)
                 if enemy.is_off_screen():
                     enemies.remove(enemy)
+                if enemy.collides_with(player):
+                    enemies.remove(enemy)
+                    player.lose_health()
+                    hit_sound.play()
 
             for bullet in player.bullets[:]:
                 for enemy in enemies[:]:
@@ -172,6 +205,13 @@ def game_screen(screen):
                         score += 5
                         break
 
+
+            if player.health <= 0:
+                show_restart_button = True
+                scroll_speed = 0
+                pygame.mixer_music.stop()
+                game_over_sound.play()
+
         # Draw Scrolling background
         screen.blit(background_imgage, (0, scroll_y - background_height))
         screen.blit(background_imgage, (0, scroll_y))
@@ -179,8 +219,9 @@ def game_screen(screen):
         for enemy in enemies:
             enemy.draw()
 
-        # Draw player to the screen
-        player.draw()
+        # Only draw player character if game is not over yet
+        if not show_restart_button:
+            player.draw()
 
         # Draw pause button based on the pressed state
         if pause_button_pressed:
@@ -205,6 +246,18 @@ def game_screen(screen):
             screen.blit(resume_text, resume_text_rect)
             screen.blit(exit_text, exit_text_rect)
         
+        # Draw restart button when player health is <= 0
+        if show_restart_button:
+            if restart_button_pressed:
+                screen.blit(restart_button_pressed_image, restart_button_rect)
+            else:
+                screen.blit(restart_button_image, restart_button_rect)
+            
+            # Draw restart button text
+            screen.blit(restart_text, restart_text_rect)
+
+
+        
         score_text = font.render(f"Score: {score}", True, white)
         screen.blit(score_text, (40, screen.get_height() - 40))     
 
@@ -225,6 +278,9 @@ class Player:
         self.screen = screen
         self.bullets = []
         self.bullet_sound = pygame.mixer.Sound("FreeAssets/Sound/shootingSound.wav")
+        self.health = 4
+        self.health_image = pygame.image.load("FreeAssets/UI/health/playerLife1_blue.png")
+        self.health_image_spacing = 10
 
     def handle_input(self, event):
         if event.type == pygame.KEYDOWN:
@@ -236,7 +292,7 @@ class Player:
                 bullet_x = self.x + (self.image.get_width() // 2) - 10
                 bullet_y = self.y
                 self.bullets.append(Bullet(self.screen, bullet_x, bullet_y))
-                self.bullet_sound.set_volume(0.2)
+                self.bullet_sound.set_volume(0.05)
                 self.bullet_sound.play()
 
 
@@ -262,6 +318,20 @@ class Player:
         self.screen.blit(self.image, (self.x, self.y))
         for bullet in self.bullets:
             bullet.draw()
+        
+        for i in range(self.health):
+            health_x = self.screen.get_width() - (i + 1) * (self.health_image.get_width() + self.health_image_spacing)
+            health_y = 10
+            self.screen.blit(self.health_image, (health_x, health_y))
+    
+    def lose_health(self):
+        self.health -= 1
+        if self.health <= 0:
+            print("Game Over")
+
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.image.get_width(), self.image.get_height())
+
             
 
 
@@ -284,6 +354,8 @@ class Enemy:
     def get_rect(self):
         return pygame.Rect(self.x, self.y, self.image.get_width(), self.image.get_height())
 
+    def collides_with(self, player):
+        return self.get_rect().colliderect(player.get_rect())
 
 class Bullet:
     def __init__(self, screen, x, y):
