@@ -3,7 +3,11 @@ import pygame
 import sys
 
 
-def game_screen(screen, difficulty):
+
+def game_screen(screen, difficulty, player_name):
+    from shooter import update_leaderboard, save_leaderboard,load_leaderboard
+    load_leaderboard()
+    
 
     # Initialize the mixer for music
     pygame.mixer.init()
@@ -178,7 +182,7 @@ def game_screen(screen, difficulty):
 
                 if restart_button_pressed:
                     restart_button_pressed = False
-                    game_screen(screen,difficulty)
+                    game_screen(screen,difficulty,player_name)
 
         # Update player position if the game is not paused
         if not show_pause_menu and not show_restart_button:
@@ -233,6 +237,9 @@ def game_screen(screen, difficulty):
                 scroll_speed = 0
                 pygame.mixer_music.stop()
                 game_over_sound.play()
+                
+                update_leaderboard(player_name, score)
+                save_leaderboard()
 
         # Draw Scrolling background
         screen.blit(background_imgage, (0, scroll_y - background_height))

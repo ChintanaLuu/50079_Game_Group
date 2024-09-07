@@ -1,6 +1,48 @@
+import json
 import pygame
 import sys
 from GameScreen import game_screen
+
+
+leaderboard = []
+
+# Keep only top 5 scores in the leader board
+def update_leaderboard(player_name, score):
+    global leaderboard
+    leaderboard.append((player_name, score))
+    leaderboard.sort(key=lambda x: x[1], reverse=True)
+    if len(leaderboard) > 5:
+        leaderboard = leaderboard[:5]
+
+
+def draw_leaderboard(screen, font):
+    for index, (name, score) in enumerate(leaderboard):
+        text = font.render(f"{index + 1}. {name}: {score}", True, (255, 255, 255))
+        screen.blit(text, (screen.get_width() // 1.27 , 160 + index * 40))
+    
+    
+
+
+def save_leaderboard():
+    with open("leaderboard.json", "w") as f:
+        json.dump(leaderboard, f)
+
+
+def load_leaderboard():
+    global leaderboard
+    try:
+        with open("leaderboard.json", "r") as f:
+            leaderboard = json.load(f)
+    except FileNotFoundError:
+        leaderboard = []
+
+
+
+
+
+
+
+
 
 def main_menu(screen):
 
@@ -57,6 +99,7 @@ def main_menu(screen):
     leaderboard_box_rect = pygame.Rect(leaderboard_box_x, leaderboard_box_y, leaderboard_box_width, leaderboard_box_height)
     show_leaderboard = False
     leader_board_button_pressed = False
+
     
 
     # Get the size of the button images
@@ -125,6 +168,7 @@ def main_menu(screen):
     # Main game loop
     running = True
     while running:
+        load_leaderboard()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -136,7 +180,7 @@ def main_menu(screen):
                         # When ENTER is pressed, start the game
                         pygame.mixer.music.stop()
                         start_game_sound.play()
-                        game_screen(screen, current_difficulty)
+                        game_screen(screen, current_difficulty, player_name)
                     elif event.key == pygame.K_BACKSPACE:
                         # Remove the last character
                         player_name = player_name[:-1]
@@ -194,6 +238,7 @@ def main_menu(screen):
         if show_leaderboard:
             pygame.draw.rect(screen, (45,45,45), leaderboard_box_rect)
             screen.blit(leader_board_text, leader_board_text_rect)
+            draw_leaderboard(screen,font)
 
         if entering_name:
             # Display text input box for player's name
