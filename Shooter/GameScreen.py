@@ -30,7 +30,8 @@ def game_screen(screen, difficulty, player_name):
     game_over_sound.set_volume(0.03)
 
     # Background
-    background_imgage = pygame.image.load("Shooter/FreeAssets/Background/background2.jpg")
+    # Set background image of active game.
+    background_imgage = pygame.image.load("Shooter/FreeAssets/Background/new_bg.png")
     background_height = background_imgage.get_height()
 
     # Player
