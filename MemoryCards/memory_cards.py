@@ -10,6 +10,10 @@ screen = pygame.display.set_mode((1024, 768)) # Define the screen size
 pygame.display.set_caption("Memory Match Game") # Set the window caption
 clock = pygame.time.Clock() # Setting up game clock for frame rate
 
+# Add background image
+bg_img = pygame.image.load('MemoryCards/images/wood_bg.png')
+bg_img_rect = bg_img.get_rect(topleft = (0,0))
+
 def initialize_game():
     # Load images and assign identifiers
     images = {
@@ -74,7 +78,8 @@ while running:
                         tries += 1  # Increment the tries counter when a second card is flipped
 
         if first_flipped_card and second_flipped_card:
-            screen.fill("purple")
+            #
+            screen.blit(bg_img, bg_img_rect)
             for card in cards:
                 card.draw(screen)
             pygame.display.update()
@@ -101,8 +106,8 @@ while running:
         cards = initialize_game()
         tries = 0  # Reset the tries counter for the new game
         
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
+    # fill the screen with background to wipe away anything from last frame
+    screen.blit(bg_img, bg_img_rect)
     for card in cards:
         card.draw(screen)
 
