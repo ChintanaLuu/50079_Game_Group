@@ -46,6 +46,9 @@ def load_leaderboard():
 
 def main_menu(screen):
 
+    # Initialize game modes
+    xmas_mode = None
+
     # Initialize the mixer for music
     pygame.mixer.init()
 
@@ -70,6 +73,7 @@ def main_menu(screen):
     
 
     # Load button images
+    xmas_game_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
     start_game_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
     exit_game_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
     set_difficulty_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
@@ -103,6 +107,7 @@ def main_menu(screen):
     
 
     # Get the size of the button images
+    xmas_game_button_rect = xmas_game_button_image.get_rect()
     start_game_button_rect = start_game_button_image.get_rect()
     exit_game_button_rect = exit_game_button_image.get_rect()
     set_difficulty_button_rect = set_difficulty_button_image.get_rect()
@@ -113,6 +118,9 @@ def main_menu(screen):
 
 
     # Adjust the button positions
+    xmas_game_button_rect.x = 50
+    xmas_game_button_rect.y = screen.get_height() - xmas_game_button_rect.height - 200 # Change height so button can be seen.
+    
     start_game_button_rect.x = 50
     start_game_button_rect.y = screen.get_height() - start_game_button_rect.height - 170
 
@@ -135,6 +143,9 @@ def main_menu(screen):
     font = pygame.font.Font(None, 36)
     text_color = (0, 0, 0)
     white = (255,255,255)
+
+    # Mode button text.
+    xmas_game_button_text = font.render("Start XMAS Mode", True, text_color)
     start_game_button_text = font.render("Start Game", True, text_color)
     exit_game_button_text = font.render("Back To Menu", True, text_color)
     set_difficulty_button_text = font.render("Set Difficulty", True, text_color)
@@ -192,6 +203,10 @@ def main_menu(screen):
                 mouse_pos = pygame.mouse.get_pos()
 
                 if not show_difficulty_buttons:
+                    if xmas_game_button_rect.collidepoint(mouse_pos):
+                        xmas_mode = True
+                        # Draw xmas assets.
+
                     if start_game_button_rect.collidepoint(mouse_pos):
                         # Switch to name input mode when Start Game button is clicked
                         entering_name = True

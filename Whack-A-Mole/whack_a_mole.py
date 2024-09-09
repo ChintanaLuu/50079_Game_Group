@@ -45,6 +45,12 @@ game_time_limit = 10000 # 10
 # Create app window.
 screen = pygame.display.set_mode((windowWidth, windowHeight))
 
+# Define a christmas mode!
+xmas_mode = True #None
+xmas_bg_surf = pygame.image.load('Game_Art/christmas_bg.png')
+xmas_bg_resized = pygame.transform.smoothscale_by(xmas_bg_surf, (0.8, 0.8))
+xmas_bg_rect = xmas_bg_resized.get_rect(topleft = (0,0))
+
 while True:
     Game_time= pygame.time.get_ticks()
 
@@ -67,10 +73,14 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if active_mole_position and mole_rect.collidepoint(event.pos):
 
-                mole_death = pygame.mixer.Sound('Game_Sounds/mole_squeak_sound.WAV')
-                pygame.mixer.Sound.play(mole_death)                
-                points += 1
+                if xmas_mode == False:
+                    mole_death = pygame.mixer.Sound('Game_Sounds/mole_squeak_sound.WAV')
+                    pygame.mixer.Sound.play(mole_death)
 
+                else:
+                    grinch_death = pygame.mixer.Sound('Game_Sounds/mole_squeak_sound.WAV') # Change sound later.                
+                
+                points += 1
                 active_mole_position = None
 
         if event.type == mole_timer and game_active:
@@ -84,19 +94,35 @@ while True:
                 active_mole_position = None
 
 
-        pygame.Surface.fill(screen, (0,255,0))
+        if xmas_mode == True:
+            screen.blit(xmas_bg_resized, xmas_bg_rect)
 
-        draw_holes(spawnDict, screen)
+            draw_holes(spawnDict, screen)
 
-        # Draw the mole at the selected random location.
-        if active_mole_position:
-            mole_sprite = pygame.image.load('Game_Art/R (9).png').convert_alpha()
-            # Get rect and resize mole sprite
-            mole_rect = mole_sprite.get_rect(topleft=active_mole_position)
-            mole_sprite = pygame.transform.smoothscale_by(mole_sprite, (0.1, 0.1))
-            mole_rect = mole_sprite.get_rect(topleft=active_mole_position)  # Update rect after resizing. Positioning/placing from top left pixel of image.
+            # Draw the mole at the selected random location.
+            if active_mole_position:
+                mole_sprite = pygame.image.load('Game_Art/R (9).png').convert_alpha()
+                # Get rect and resize mole sprite
+                mole_rect = mole_sprite.get_rect(topleft=active_mole_position)
+                mole_sprite = pygame.transform.smoothscale_by(mole_sprite, (0.1, 0.1))
+                mole_rect = mole_sprite.get_rect(topleft=active_mole_position)  # Update rect after resizing. Positioning/placing from top left pixel of image.
 
-            screen.blit(mole_sprite, mole_rect.topleft)
+                screen.blit(mole_sprite, mole_rect.topleft)
+
+        else:
+            pygame.Surface.fill(screen, (0,255,0))
+
+            draw_holes(spawnDict, screen)
+
+            # Draw the mole at the selected random location.
+            if active_mole_position:
+                mole_sprite = pygame.image.load('Game_Art/R (9).png').convert_alpha()
+                # Get rect and resize mole sprite
+                mole_rect = mole_sprite.get_rect(topleft=active_mole_position)
+                mole_sprite = pygame.transform.smoothscale_by(mole_sprite, (0.1, 0.1))
+                mole_rect = mole_sprite.get_rect(topleft=active_mole_position)  # Update rect after resizing. Positioning/placing from top left pixel of image.
+
+                screen.blit(mole_sprite, mole_rect.topleft)
 
     #Manu: displays the score of moles caught
         score_value = font.render(f"moles captured: {points}", True,(0,0,0))
@@ -110,6 +136,7 @@ while True:
         screen.blit(time_left_surf,time_left_rect)
 
 
+        # Define end screen.
         #if seconds > game_time_limit:
         if seconds < 0:
             # gameactive set to false to stop mole spawning.

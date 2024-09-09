@@ -31,7 +31,13 @@ def game_screen(screen, difficulty, player_name):
 
     # Background
     # Set background image of active game.
-    background_imgage = pygame.image.load("Shooter/FreeAssets/Background/new_bg.png")
+
+    # NEED TO GET STORED XMAS_MODE VARIABLE FROM SHOOTER.PY
+    if xmas_mode == false:
+        background_imgage = pygame.image.load("Shooter/FreeAssets/Background/new_bg.png")
+    else:
+        background_imgage = pygame.image.load("Shooter/FreeAssets/Background/christmas_bg.png")
+
     background_height = background_imgage.get_height()
 
     # Player
