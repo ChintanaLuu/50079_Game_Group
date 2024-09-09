@@ -38,7 +38,22 @@ def load_leaderboard():
 
 
 
+def load_game_rules():
+    try:
+        with open("Game Rules.txt", "r") as file:
+            game_rules = file.read().splitlines()
+    except FileNotFoundError:
+        game_rules = ["Game rules not found!"]
+    return game_rules
 
+
+def draw_game_rules(screen, font, game_rules, game_rules_box_rect):
+    line_height = font.get_height() + 5
+    y_offset = game_rules_box_rect.y + 50
+    for line in game_rules:
+        rule_text = font.render(line, True, (255, 255, 255))
+        screen.blit(rule_text, (game_rules_box_rect.x + 20, y_offset))
+        y_offset += line_height
 
 
 
@@ -76,6 +91,7 @@ def main_menu(screen):
     easy_button_image = set_difficulty_button_image
     normal_button_image = set_difficulty_button_image
     hard_button_image = set_difficulty_button_image
+    game_rules_button_image = set_difficulty_button_image
 
     # Load the learder board button images
     leader_board_button_image = pygame.image.load("FreeAssets/UI/button/pause_button.png")
@@ -100,15 +116,25 @@ def main_menu(screen):
     show_leaderboard = False
     leader_board_button_pressed = False
 
-    
+    # Game rules
+    game_rules_box_width = screen.get_width() // 3.2
+    game_rules_box_height = screen.get_height() // 3
+    game_rules_box_x = screen.get_width() // 20
+    game_rules_box_y = screen.get_height() // 7
+    game_rules_box_rect = pygame.Rect(game_rules_box_x, game_rules_box_y, game_rules_box_width, game_rules_box_height)
+    show_game_rules = False
+    game_rules_button_pressed = False
+
 
     # Get the size of the button images
     start_game_button_rect = start_game_button_image.get_rect()
+
     exit_game_button_rect = exit_game_button_image.get_rect()
     set_difficulty_button_rect = set_difficulty_button_image.get_rect()
     easy_button_rect = easy_button_image.get_rect()
     normal_button_rect = normal_button_image.get_rect()
     hard_button_rect = hard_button_image.get_rect()
+    game_rules_button_rect = game_rules_button_image.get_rect()
 
 
 
@@ -131,6 +157,9 @@ def main_menu(screen):
     hard_button_rect.x = 300
     hard_button_rect.y = exit_game_button_rect.y
 
+    game_rules_button_rect.x = 50
+    game_rules_button_rect.y = screen.get_height() - game_rules_button_rect.height - 690
+
     # Define font for button text
     font = pygame.font.Font(None, 36)
     text_color = (0, 0, 0)
@@ -142,6 +171,10 @@ def main_menu(screen):
     normal_button_text = font.render("Normal Mode", True, text_color)
     hard_button_text = font.render("Hard Mode", True, text_color)
     leader_board_text = font.render("Learder Board", True, white)
+    game_rules_button_text = font.render("Read Rules", True, text_color)
+    game_rules_text = font.render("Game Rules: ", True, white)
+    game_rules_text_rect = game_rules_text.get_rect(center=game_rules_box_rect.center)
+    game_rules_text_rect.y -= 100
 
     # Get the position for the text to be centered on the buttons
     start_game_text_rect = start_game_button_text.get_rect(center=start_game_button_rect.center)
@@ -154,16 +187,19 @@ def main_menu(screen):
     leader_board_text_rect = leader_board_text.get_rect(center=leaderboard_box_rect.center)
     leader_board_text_rect.y -= 100
 
+    game_rules_button_text_rect = game_rules_button_text.get_rect(center=game_rules_button_rect.center)
+
 
     # Difficulty selection status
     show_difficulty_buttons = False
+
     current_difficulty = "Easy Mode"
 
     # Player name input
     entering_name = False
     player_name = ""
 
-    
+    game_rules = load_game_rules()
 
     # Main game loop
     running = True
@@ -200,6 +236,7 @@ def main_menu(screen):
                     elif set_difficulty_button_rect.collidepoint(mouse_pos):
                         show_difficulty_buttons = True
 
+
                 if show_difficulty_buttons:
                     if easy_button_rect.collidepoint(mouse_pos):
                         current_difficulty = "Easy Mode"
@@ -214,10 +251,17 @@ def main_menu(screen):
                 if leader_board_button_rect.collidepoint(event.pos):
                     show_leaderboard = not show_leaderboard
                     leader_board_button_pressed = True
+                
+                if game_rules_button_rect.collidepoint(mouse_pos):
+                    show_game_rules = not show_game_rules
+                    game_rules_button_pressed = True
             
             if event.type == pygame.MOUSEBUTTONUP:
                 if leader_board_button_pressed:
                     leader_board_button_pressed = False
+                
+                if game_rules_button_pressed:
+                    game_rules_button_pressed = False
 
 
 
@@ -239,6 +283,15 @@ def main_menu(screen):
             pygame.draw.rect(screen, (45,45,45), leaderboard_box_rect)
             screen.blit(leader_board_text, leader_board_text_rect)
             draw_leaderboard(screen,font)
+
+        
+        if show_game_rules:
+            pygame.draw.rect(screen, (45,45,45), game_rules_box_rect)
+            screen.blit(game_rules_text, game_rules_text_rect)
+            draw_game_rules(screen, font, game_rules, game_rules_box_rect)
+
+            
+
 
         if entering_name:
             # Display text input box for player's name
@@ -264,11 +317,14 @@ def main_menu(screen):
             screen.blit(start_game_button_image, (start_game_button_rect.x, start_game_button_rect.y))
             screen.blit(exit_game_button_image, (exit_game_button_rect.x, exit_game_button_rect.y))
             screen.blit(set_difficulty_button_image, (set_difficulty_button_rect.x, set_difficulty_button_rect.y))
+            screen.blit(game_rules_button_image,(game_rules_button_rect.x, game_rules_button_rect.y))
 
             # Draw the text on the buttons
             screen.blit(start_game_button_text, start_game_text_rect)
             screen.blit(exit_game_button_text, exit_game_text_rect)
             screen.blit(set_difficulty_button_text, set_difficulty_text_rect)
+            screen.blit(game_rules_button_text, game_rules_button_text_rect)
+
             
 
         
@@ -278,12 +334,14 @@ def main_menu(screen):
             screen.blit(start_game_button_image, (start_game_button_rect.x, start_game_button_rect.y))
             screen.blit(exit_game_button_image, (exit_game_button_rect.x, exit_game_button_rect.y))
             screen.blit(set_difficulty_button_image, (set_difficulty_button_rect.x, set_difficulty_button_rect.y))
+            screen.blit(game_rules_button_image,(game_rules_button_rect.x, game_rules_button_rect.y))
 
             # Draw the text on the buttons
             screen.blit(start_game_button_text, start_game_text_rect)
             screen.blit(exit_game_button_text, exit_game_text_rect)
             screen.blit(set_difficulty_button_text, set_difficulty_text_rect)
-            
+            screen.blit(game_rules_button_text, game_rules_button_text_rect)
+
             
             
             screen.blit(easy_button_image, (easy_button_rect.x, easy_button_rect.y))
