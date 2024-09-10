@@ -11,14 +11,16 @@ pygame.init()
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
+YELLOW = (255,255,0)
+
 
 # Set up fonts
 font = pygame.font.Font(None, 74)
 small_font = pygame.font.Font(None, 40)
 
 def ask_number_of_players():
-    screen.fill(WHITE)
-    text = font.render("Enter number of players:", True, BLACK)
+    screen.fill(BLACK)
+    text = font.render("Enter number of players:", True, WHITE)
     screen.blit(text, (50, 150))
     pygame.display.flip()
     
@@ -38,17 +40,17 @@ def ask_number_of_players():
                 else:
                     player_input += event.unicode
 
-        screen.fill(WHITE)
+        screen.fill(BLACK)
         screen.blit(text, (50, 150))
-        input_field = font.render(player_input, True, BLUE)
+        input_field = font.render(player_input, True, YELLOW)
         screen.blit(input_field, (50, 250))
         pygame.display.flip()
 
     return int(player_input)
 
 def ask_for_action(player):
-    screen.fill(WHITE)
-    text = font.render(f"{player}, Enter an action:", True, BLACK)
+    screen.fill(BLACK)
+    text = font.render(f"{player}, Enter an action:", True, WHITE)
     screen.blit(text, (50, 150))
     pygame.display.flip()
 
@@ -68,17 +70,17 @@ def ask_for_action(player):
                 else:
                     action_input += event.unicode
 
-        screen.fill(WHITE)
+        screen.fill(BLACK)
         screen.blit(text, (50, 150))
-        input_surface = font.render(action_input, True, BLUE)
+        input_surface = font.render(action_input, True, YELLOW)
         screen.blit(input_surface, (50, 250))
         pygame.display.flip()
 
     return action_input
 
 def display_message(message):
-    screen.fill(WHITE)
-    text = font.render(message, True, BLACK)
+    screen.fill(BLACK)
+    text = font.render(message, True, WHITE)
     screen.blit(text, (50, 250))
     pygame.display.flip()
     pygame.time.wait(2000)
@@ -108,8 +110,8 @@ def main():
         round_number += 1
         
         # Check if the player want to contine the game
-        screen.fill(WHITE)
-        text = small_font.render("Press Enter to continue, Esc to quit", True, BLACK)
+        screen.fill(BLACK)
+        text = small_font.render("Press Enter to continue, Esc to quit", True, WHITE)
         screen.blit(text, (50, 300))
         pygame.display.flip()
 
