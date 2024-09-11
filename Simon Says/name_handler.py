@@ -8,13 +8,13 @@ def get_player_names(screen, font, WHITE, BLACK):
     input_active = True
     player_name = ''
     while input_active:
-        screen.fill(WHITE)
-        draw_text(screen, "Enter player names. Press Enter after each name.", font, BLACK, 50, 50)
-        draw_text(screen, "Leave blank and press Enter when done.", font, BLACK, 50, 80)
-        draw_text(screen, "Current Input: " + player_name, font, BLACK, 50, 150)
+        screen.fill(BLACK)
+        draw_text(screen, "Enter player names. Press Enter after each name.", font, WHITE, 50, 50)
+        draw_text(screen, "Leave blank and press Enter when done.", font, WHITE, 50, 80)
+        draw_text(screen, "Current Input: " + player_name, font, WHITE, 50, 150)
         y_offset = 200
         for name in players:
-            draw_text(screen, name, font, BLACK, 50, y_offset)
+            draw_text(screen, name, font, WHITE, 50, y_offset)
             y_offset += 30
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
