@@ -1,5 +1,7 @@
 import pygame
 import random
+import os
+import json
 from card import Card
 
 print(pygame.ver)
@@ -9,6 +11,8 @@ pygame.init()
 screen = pygame.display.set_mode((1024, 768)) # Define the screen size
 pygame.display.set_caption("Memory Match Game") # Set the window caption
 clock = pygame.time.Clock() # Setting up game clock for frame rate
+leaderboard_file = "./MemoryCards/leaderboard.json"
+player_name = "tung"
 
 # Add background image
 bg_img = pygame.image.load('MemoryCards/images/christmas_bg.png')
@@ -54,6 +58,20 @@ def initialize_game():
         card = Card(x, y, card_width, card_height, image, identifier, backImage)
         cards.append(card)
     return cards
+
+def load_leaderboard():
+    """Load the leaderboard from a JSON file."""
+    if not os.path.exists(leaderboard_file):
+        return []
+    with open(leaderboard_file, "r") as f:
+        return json.load(f)
+
+def save_leaderboard(leaderboard):
+    """Save the leaderboard to a JSON file."""
+    with open(leaderboard_file, "w") as f:
+        json.dump(leaderboard, f)
+
+
 
 # Game loop
 running = True
@@ -103,6 +121,8 @@ while running:
 
     # Check if the board is cleared
     if not cards:
+
+
         # Display a message or wait a bit before restarting
         pygame.time.wait(1000)
         cards = initialize_game()
