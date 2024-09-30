@@ -1,143 +1,124 @@
 import pygame
 import sys
+from name_handler import get_player_names, choose_random_referee, draw_text
+from command_handler import get_commands, pick_commands_for_round
 
-
-
-# Initialize Pygame
 pygame.init()
 
+# Set up display
+screen = pygame.display.set_mode((1024, 768))
+pygame.display.set_caption('Simon Says')
 
-# Define Colors
+# Set up font
+font = pygame.font.Font(None, 30)
+large_font = pygame.font.Font(None, 100)
+
+# Define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-BLUE = (0, 0, 255)
-YELLOW = (255,255,0)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
 
+class Button:
+    def __init__(self, x, y, width, height, text, color, text_color):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = text
+        self.color = color
+        self.text_color = text_color
 
-# Set up fonts
-font = pygame.font.Font(None, 74)
-small_font = pygame.font.Font(None, 40)
+    def draw(self, screen, font):
+        pygame.draw.rect(screen, self.color, self.rect)
+        text_surface = font.render(self.text, True, self.text_color)
+        screen.blit(text_surface, (self.rect.x + (self.rect.width - text_surface.get_width()) // 2,
+                                   self.rect.y + (self.rect.height - text_surface.get_height()) // 2))
 
-def ask_number_of_players():
-    screen.fill(BLACK)
-    text = font.render("Enter number of players:", True, WHITE)
-    screen.blit(text, (50, 150))
-    pygame.display.flip()
-    
-    input_active = True
-    player_input = ""
+    def is_clicked(self, pos):
+        return self.rect.collidepoint(pos)
 
-    while input_active:
+pause_button = Button(900, 20, 100, 50, 'Pause', GREEN, BLACK)
+resume_button = Button(400, 300, 200, 50, 'Resume', GREEN, BLACK)
+exit_button = Button(400, 400, 200, 50, 'Exit', RED, WHITE)
+restart_button = Button(400, 500, 200, 50, 'Restart', GREEN, BLACK)  
+
+# Game loop
+def game_loop(players, referee, commands_for_round):
+    current_command_index = 0
+    round_in_progress = True
+    paused = False
+
+    while round_in_progress:
+        screen.fill(WHITE)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    input_active = False
-                elif event.key == pygame.K_BACKSPACE:
-                    player_input = player_input[:-1]
-                else:
-                    player_input += event.unicode
 
-        screen.fill(BLACK)
-        screen.blit(text, (50, 150))
-        input_field = font.render(player_input, True, YELLOW)
-        screen.blit(input_field, (50, 250))
-        pygame.display.flip()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
 
-    return int(player_input)
+                if pause_button.is_clicked(pos):
+                    paused = True
 
-def ask_for_action(player):
-    screen.fill(BLACK)
-    text = font.render(f"{player}, Enter an action:", True, WHITE)
-    screen.blit(text, (50, 150))
+                if paused:
+                    if resume_button.is_clicked(pos):
+                        paused = False
+                    if exit_button.is_clicked(pos):
+                        pygame.quit()
+                        sys.exit()
+                    if restart_button.is_clicked(pos):
+                        main()  
+
+        if not paused:
+            # Display referee and current command
+            draw_text(screen, f"Referee: {referee}", font, BLACK, 50, 50)
+            if current_command_index < len(commands_for_round):
+                command = commands_for_round[current_command_index]
+                draw_text(screen, f"Command: {command}", font, BLACK, 50, 100)
+            else:
+                round_in_progress = False
+                draw_text(screen, "Round Over!", font, BLACK, 50, 150)
+
+            current_command_index += 1 if current_command_index < len(commands_for_round) else 0
+            pygame.time.wait(1000)  # Wait for 1 second between commands
+
+        pause_button.draw(screen, font)
+
+        if paused:
+            draw_pause_menu()
+
+        pygame.display.update()
+
+    if not round_in_progress:
+        pygame.time.wait(2000)  
+        start_new_round()
+
+def draw_pause_menu():
+    screen.fill(WHITE)
+    draw_text(screen, "Game Paused", font, BLACK, 400, 200)
+
+    resume_button.draw(screen, font)
+    exit_button.draw(screen, font)
+    restart_button.draw(screen, font)
+
     pygame.display.flip()
 
-    input_active = True
-    action_input = ""
+def start_new_round():
+    players = get_player_names(screen, font, WHITE, BLACK)
 
-    while input_active:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN and action_input:
-                    input_active = False
-                elif event.key == pygame.K_BACKSPACE:
-                    action_input = action_input[:-1]
-                else:
-                    action_input += event.unicode
+    referee = choose_random_referee(players)
 
-        screen.fill(BLACK)
-        screen.blit(text, (50, 150))
-        input_surface = font.render(action_input, True, YELLOW)
-        screen.blit(input_surface, (50, 250))
-        pygame.display.flip()
+    commands = get_commands(screen, font, WHITE, BLACK)
 
-    return action_input
+    # Pick 5 random commands for this round
+    commands_for_round = pick_commands_for_round(commands)
 
-def display_message(message):
-    screen.fill(BLACK)
-    text = font.render(message, True, WHITE)
-    screen.blit(text, (50, 250))
-    pygame.display.flip()
-    pygame.time.wait(2000)
+    # Start the main game loop again with fresh data
+    game_loop(players, referee, commands_for_round)
 
+# Main function
 def main():
-    # Start the game
-    num_players = ask_number_of_players()
-    players = [f"Player {i+1}" for i in range(num_players)]
-    
-    round_number = 1
-    running = True
-    
-    while running:
-        display_message(f"Round {round_number}!")
-        
-        # Ask players to write their actions
-        round_actions = []
-        for player in players:
-            action = ask_for_action(player)
-            round_actions.append((player, action))
-        
-        # Ask players to do actions
-        for player, action in round_actions:
-            display_message(f"{player} : {action}")
-            pygame.time.wait(2000)
-        
-        round_number += 1
-        
-        # Check if the player want to contine the game
-        screen.fill(BLACK)
-        text = small_font.render("Press Enter to continue, Esc to quit", True, WHITE)
-        screen.blit(text, (50, 300))
-        pygame.display.flip()
-
-        waiting_for_input = True
-        while waiting_for_input:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        waiting_for_input = False
-                    elif event.key == pygame.K_ESCAPE:
-                        running = False
-                        waiting_for_input = False
-
-    pygame.quit()
+    start_new_round()
 
 if __name__ == "__main__":
-
-
-    # Define screen dimensions
-    screen_width = 1024
-    screen_height = 768
-    
-    screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("Simon Says Game")
-
     main()
