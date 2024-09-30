@@ -1,12 +1,14 @@
 import pygame
 
 class Card:
-    def __init__(self, x, y, width, height, image, identifier) -> None:
+    def __init__(self, x, y, width, height, image, identifier, backImage) -> None:
         self.rect = pygame.Rect(x, y, width, height) # Defines the card position and size
         # Card Front
         self.image = image # The display image when the card is flipped
         self.image = pygame.transform.scale(image, (width, height))  # Resize the image to match the rect
         # Card Back
+        self.backImage = pygame.transform.scale(backImage, (width, height))
+
         #self.backImage = pygame.
         self.is_flipped = False # Flag to check if the card is flipped
         self.is_matched = False # Flag to check if the cards are matched
@@ -22,7 +24,9 @@ class Card:
             #pygame.time.wait(0.5)
             #surface.blit(self.image, self.rect.topleft)
         else:
-            pygame.draw.rect(surface, (0, 0, 0), self.rect)
+            #display the card facedown
+            #pygame.draw.rect(surface, (0, 0, 0), self.rect)
+            surface.blit(self.backImage, self.rect.topleft)
 
     """Flip the card to reveal the image"""
     def flip(self):

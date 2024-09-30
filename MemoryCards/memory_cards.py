@@ -11,28 +11,29 @@ pygame.display.set_caption("Memory Match Game") # Set the window caption
 clock = pygame.time.Clock() # Setting up game clock for frame rate
 
 # Add background image
-bg_img = pygame.image.load('MemoryCards/images/wood_bg.png')
+bg_img = pygame.image.load('MemoryCards/images/christmas_bg.png')
 bg_img_rect = bg_img.get_rect(topleft = (0,0))
 
 def initialize_game():
     # Load images and assign identifiers
     images = {
-        "apple": pygame.image.load("./MemoryCards/images/apple.jpg"),
-        "banana": pygame.image.load("./MemoryCards/images/banana.jpg"),
-        "blueberry": pygame.image.load("./MemoryCards/images/blueberry.jpg"),
-        "eggplant": pygame.image.load("./MemoryCards/images/eggplant.jpg"),
-        "grape": pygame.image.load("./MemoryCards/images/grape.jpg"),
-        "lime": pygame.image.load("./MemoryCards/images/lime.jpg"),
-        "orange": pygame.image.load("./MemoryCards/images/orange.jpg"),
-        "pumpkin": pygame.image.load("./MemoryCards/images/pumpkin.jpg"),
+        "bauble": pygame.image.load("./MemoryCards/images/bauble.png"),
+        "gingerbread": pygame.image.load("./MemoryCards/images/gingerbread.png"),
+        "holly": pygame.image.load("./MemoryCards/images/holly.png"),
+        "milk_and_cookies": pygame.image.load("./MemoryCards/images/milk_and_cookies.png"),
+        "present": pygame.image.load("./MemoryCards/images/present.png"),
+        "santas_hat": pygame.image.load("./MemoryCards/images/santas_hat.png"),
+        "wreath": pygame.image.load("./MemoryCards/images/wreath.png"),
+        "xmasTree": pygame.image.load("./MemoryCards/images/xmasTree.png"),
     }
 
     # Define grid properties
     rows = 4
     cols = 4
+    horizontalSpacing = 75
     spacing = 20
     top_padding = 50  # Add padding at the top
-    card_width = (1024 - (cols + 1) * spacing) / cols # Calculate the card width and height with spacing around them 
+    card_width = (1024 - (cols + 1) * horizontalSpacing) / cols # Calculate the card width and height with spacing around them 
     card_height = (768 - top_padding - (rows + 1) * spacing) / rows
 
     # Create a list of image pairs
@@ -46,10 +47,11 @@ def initialize_game():
     for i in range(rows * cols):
         row = i // cols
         col = i % cols
-        x = col * (card_width + spacing) + spacing
+        x = col * (card_width + horizontalSpacing) + horizontalSpacing
         y = row * (card_height + spacing) + spacing + top_padding
         identifier, image = pairs[i]
-        card = Card(x, y, card_width, card_height, image, identifier)
+        backImage = pygame.image.load("MemoryCards/images/card_back.png")
+        card = Card(x, y, card_width, card_height, image, identifier, backImage)
         cards.append(card)
     return cards
 
