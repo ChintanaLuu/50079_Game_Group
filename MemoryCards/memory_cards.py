@@ -78,6 +78,23 @@ def update_leaderboard(player_name, tries):
     leaderboard = sorted(leaderboard, key=lambda x: x["tries"])  # Sort by number of tries
     save_leaderboard(leaderboard)
 
+def display_leaderboard(screen):
+    """Display the leaderboard on the screen."""
+    leaderboard = load_leaderboard()
+    
+    font = pygame.font.Font(None, 36)
+    y_offset = 100
+    # screen.fill((0, 0, 0))  # Clear screen with black
+    
+    # Display the leaderboard
+    for index, entry in enumerate(leaderboard[:5]):  # Show top 5 players
+        name_text = font.render(f"{index + 1}. {entry['name']} - {entry['tries']} tries", True, (255, 255, 255))
+        screen.blit(name_text, (200, y_offset))
+        y_offset += 50
+    
+    pygame.display.flip()
+    pygame.time.wait(3000)  # Display for 3 seconds
+
 
 
 # Game loop
@@ -128,7 +145,11 @@ while running:
 
     # Check if the board is cleared
     if not cards:
+        # Update the leaderboard
+        update_leaderboard(player_name, tries)
 
+        # Display the leaderboard (For testing only)
+        display_leaderboard(screen)
 
         # Display a message or wait a bit before restarting
         pygame.time.wait(1000)
