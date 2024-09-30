@@ -71,6 +71,13 @@ def save_leaderboard(leaderboard):
     with open(leaderboard_file, "w") as f:
         json.dump(leaderboard, f)
 
+def update_leaderboard(player_name, tries):
+    """Update the leaderboard with the player's score."""
+    leaderboard = load_leaderboard()
+    leaderboard.append({"name": player_name, "tries": tries})
+    leaderboard = sorted(leaderboard, key=lambda x: x["tries"])  # Sort by number of tries
+    save_leaderboard(leaderboard)
+
 
 
 # Game loop
