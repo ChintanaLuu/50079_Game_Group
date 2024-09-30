@@ -5,7 +5,7 @@ import sys
 
 
 def game_screen(screen, difficulty, player_name):
-    from shooter import update_leaderboard, save_leaderboard,load_leaderboard
+    from Shooter.shooter import update_leaderboard, save_leaderboard,load_leaderboard
     load_leaderboard()
     
 
@@ -13,24 +13,24 @@ def game_screen(screen, difficulty, player_name):
     pygame.mixer.init()
     
     # Load the music and loop it
-    pygame.mixer.music.load("FreeAssets/Sound/InGameMusic.wav")
+    pygame.mixer.music.load("Shooter/FreeAssets/Sound/InGameMusic.wav")
     pygame.mixer.music.set_volume(0.1)
     pygame.mixer.music.play(-1)
 
     # Load the button click sound
-    button_click_sound = pygame.mixer.Sound("FreeAssets/Sound/ButtonClick.wav")
+    button_click_sound = pygame.mixer.Sound("Shooter/FreeAssets/Sound/ButtonClick.wav")
     button_click_sound.set_volume(0.1)
 
     # Load the get hit sound
-    hit_sound = pygame.mixer.Sound("FreeAssets/Sound/crashSound.wav")
+    hit_sound = pygame.mixer.Sound("Shooter/FreeAssets/Sound/crashSound.wav")
     hit_sound.set_volume(0.05)
 
     # Load the game over sound
-    game_over_sound = pygame.mixer.Sound("FreeAssets/Sound/gameOverSound.wav")
+    game_over_sound = pygame.mixer.Sound("Shooter/FreeAssets/Sound/gameOverSound.wav")
     game_over_sound.set_volume(0.03)
 
     # Background
-    background_imgage = pygame.image.load("FreeAssets/Background/background2.jpg")
+    background_imgage = pygame.image.load("Shooter/FreeAssets/Background/background2.jpg")
     background_height = background_imgage.get_height()
 
     # Player
@@ -58,12 +58,12 @@ def game_screen(screen, difficulty, player_name):
     white = (255, 255, 255)
 
     # Load the pause button images
-    pause_button_image = pygame.image.load("FreeAssets/UI/button/pause_button.png")
-    pause_button_pressed_image = pygame.image.load("FreeAssets/UI/button/pause_button_press.png")
+    pause_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/pause_button.png")
+    pause_button_pressed_image = pygame.image.load("Shooter/FreeAssets/UI/button/pause_button_press.png")
     
     # Load the menu button images
-    menu_button_image = pygame.image.load("FreeAssets/UI/button/menu_button.png")
-    menu_button_pressed_image = pygame.image.load("FreeAssets/UI/button/menu_button_press.png")
+    menu_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/menu_button.png")
+    menu_button_pressed_image = pygame.image.load("Shooter/FreeAssets/UI/button/menu_button_press.png")
     
     # Resize the pause button since the asset is too small
     scale = 3
@@ -177,7 +177,7 @@ def game_screen(screen, difficulty, player_name):
 
                 if exit_menu_button_pressed:
                     exit_menu_button_pressed = False
-                    from shooter import main_menu
+                    from Shooter.shooter import main_menu
                     main_menu(screen)
 
                 if restart_button_pressed:
@@ -300,15 +300,15 @@ def game_screen(screen, difficulty, player_name):
 
 class Player:
     def __init__(self, screen):
-        self.image = pygame.image.load("FreeAssets/PlayerCharacter/playerShip1_blue.png")
+        self.image = pygame.image.load("Shooter/FreeAssets/PlayerCharacter/playerShip1_blue.png")
         self.x = 450
         self.y = 650
         self.x_change = 0
         self.screen = screen
         self.bullets = []
-        self.bullet_sound = pygame.mixer.Sound("FreeAssets/Sound/shootingSound.wav")
+        self.bullet_sound = pygame.mixer.Sound("Shooter/FreeAssets/Sound/shootingSound.wav")
         self.health = 4
-        self.health_image = pygame.image.load("FreeAssets/UI/health/playerLife1_blue.png")
+        self.health_image = pygame.image.load("Shooter/FreeAssets/UI/health/playerLife1_blue.png")
         self.health_image_spacing = 10
 
     def handle_input(self, event):
@@ -366,7 +366,7 @@ class Player:
 
 class Enemy:
     def __init__(self, screen, x, y, speed):
-        self.image = pygame.image.load("FreeAssets/Enemies/enemyBlack1.png")
+        self.image = pygame.image.load("Shooter/FreeAssets/Enemies/enemyBlack1.png")
         self.x = x
         self.y = y
         self.screen = screen
@@ -389,7 +389,7 @@ class Enemy:
 
 class Bullet:
     def __init__(self, screen, x, y):
-        self.image = pygame.image.load("FreeAssets/Bullets/4.png")
+        self.image = pygame.image.load("Shooter/FreeAssets/Bullets/4.png")
         bullet_width = self.image.get_width() // 2
         bullet_height = self.image.get_height() // 2
         self.image = pygame.transform.scale(self.image, (bullet_width, bullet_height))
