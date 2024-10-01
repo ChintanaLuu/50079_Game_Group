@@ -32,19 +32,31 @@ def main(screen):
     shooter_button_rect = game_button_image.get_rect()
     simon_says_button_rect = game_button_image.get_rect()
     whack_a_mole_button_rect = game_button_image.get_rect()
+    leaderboard_button_rect = game_button_image.get_rect()
+    change_name_button_rect = game_button_image.get_rect()
 
     # Adjust the button positions
+    base_y = 320  # Starting Y position for the first button
+    button_spacing = 75  # Space between each button 
+    
+    # Set positions of the buttons (X remains the same, Y changes for each button)
     memory_cards_button_rect.x = screen.get_width() / 2.5
-    memory_cards_button_rect.y = screen.get_height() - memory_cards_button_rect.height - 400
+    memory_cards_button_rect.y = base_y  # First button position
 
     shooter_button_rect.x = screen.get_width() / 2.5
-    shooter_button_rect.y = screen.get_height() - shooter_button_rect.height - 300
+    shooter_button_rect.y = base_y + button_spacing  # Adjust for the next button
 
     simon_says_button_rect.x = screen.get_width() / 2.5
-    simon_says_button_rect.y = screen.get_height() - simon_says_button_rect.height - 200
+    simon_says_button_rect.y = base_y + 2 * button_spacing
 
     whack_a_mole_button_rect.x = screen.get_width() / 2.5
-    whack_a_mole_button_rect.y = screen.get_height() - whack_a_mole_button_rect.height - 100
+    whack_a_mole_button_rect.y = base_y + 3 * button_spacing
+
+    leaderboard_button_rect.x = screen.get_width() / 2.5
+    leaderboard_button_rect.y = base_y + 4 * button_spacing
+
+    change_name_button_rect.x = screen.get_width() / 2.5
+    change_name_button_rect.y = base_y + 5 * button_spacing
 
     # Define font for button text
     font = pygame.font.Font(None, 25)
@@ -54,12 +66,16 @@ def main(screen):
     shooter_button_text = font.render("Play Space Defender", True, text_color)
     simon_says_button_text = font.render("Play Simon Says", True, text_color)
     whack_a_mole_button_text = font.render("Play Whack a Mole", True, text_color)
+    leaderboard_button_text = font.render("View Leaderboard", True, text_color)
+    change_name_button_text = font.render("Change Name", True, text_color)
 
     # Get the position for the text to be centered on the buttons
     memory_cards_text_rect = memory_cards_button_text.get_rect(center=memory_cards_button_rect.center)
     shooter_text_rect = shooter_button_text.get_rect(center=shooter_button_rect.center)
     simon_says_text_rect = simon_says_button_text.get_rect(center=simon_says_button_rect.center)
     whack_a_mole_text_rect = whack_a_mole_button_text.get_rect(center=whack_a_mole_button_rect.center)
+    leaderboard_text_rect = leaderboard_button_text.get_rect(center=leaderboard_button_rect.center)
+    change_name_text_rect = change_name_button_text.get_rect(center=change_name_button_rect.center)
 
     # Main game loop
     running = True
@@ -77,6 +93,10 @@ def main(screen):
                     SimonSays.simon_says.main_game()
                 elif whack_a_mole_button_rect.collidepoint(mouse_pos):
                     WhackAMole.whack_a_mole.main_game()
+                # elif leaderboard_button_rect.collidepoint(mouse_pos):
+                #     display_leaderboard_menu(screen)
+                # elif change_name_button_rect.collidepoint(mouse_pos):
+                #     player_name = get_player_name(screen, player_name)
 
         screen.blit(background_image, (0, 0))
 
@@ -85,12 +105,16 @@ def main(screen):
         screen.blit(game_button_image, shooter_button_rect.topleft)
         screen.blit(game_button_image, simon_says_button_rect.topleft)
         screen.blit(game_button_image, whack_a_mole_button_rect.topleft)
+        screen.blit(game_button_image, leaderboard_button_rect.topleft)
+        screen.blit(game_button_image, change_name_button_rect.topleft)
 
         # Draw the button texts
         screen.blit(memory_cards_button_text, memory_cards_text_rect)
         screen.blit(shooter_button_text, shooter_text_rect)
         screen.blit(simon_says_button_text, simon_says_text_rect)
         screen.blit(whack_a_mole_button_text, whack_a_mole_text_rect)
+        screen.blit(leaderboard_button_text, leaderboard_text_rect)
+        screen.blit(change_name_button_text, change_name_text_rect)
         
         # Draw the game logo
         screen.blit(game_logo_image, game_logo_image_rect)

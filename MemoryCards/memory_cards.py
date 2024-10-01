@@ -2,7 +2,8 @@ import pygame
 import random
 import os
 import json
-from card import Card
+from MemoryCards.card import Card
+
 
 
 def main_game():
