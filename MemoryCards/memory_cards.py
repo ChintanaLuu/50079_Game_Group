@@ -16,14 +16,14 @@ def main_game():
     def initialize_game():
     # Load images and assign identifiers
         images = {
-            "apple": pygame.image.load("./MemoryCards/images/apple.jpg"),
-            "banana": pygame.image.load("./MemoryCards/images/banana.jpg"),
-            "blueberry": pygame.image.load("./MemoryCards/images/blueberry.jpg"),
-            "eggplant": pygame.image.load("./MemoryCards/images/eggplant.jpg"),
-            "grape": pygame.image.load("./MemoryCards/images/grape.jpg"),
-            "lime": pygame.image.load("./MemoryCards/images/lime.jpg"),
-            "orange": pygame.image.load("./MemoryCards/images/orange.jpg"),
-            "pumpkin": pygame.image.load("./MemoryCards/images/pumpkin.jpg"),
+            "apple": pygame.image.load("./MemoryCards/images/apple.png"),
+            "banana": pygame.image.load("./MemoryCards/images/banana.png"),
+            "blueberry": pygame.image.load("./MemoryCards/images/blueberry.png"),
+            "eggplant": pygame.image.load("./MemoryCards/images/eggplant.png"),
+            "grape": pygame.image.load("./MemoryCards/images/grape.png"),
+            "lime": pygame.image.load("./MemoryCards/images/lemon.png"),
+            "orange": pygame.image.load("./MemoryCards/images/orange.png"),
+            "pumpkin": pygame.image.load("./MemoryCards/images/pumpkin.png"),
         }
 
         # Define grid properties

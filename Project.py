@@ -4,8 +4,26 @@ import pygame
 import MemoryCards.memory_cards
 import SimonSays.simon_says
 import Shooter.shooter
+import WhackAMole.whack_a_mole
 
 def main(screen):
+
+    #Load the game logo
+    game_logo_image = pygame.image.load("Logo.PNG")
+    logo_width = game_logo_image.get_width() // 2
+    logo_height = game_logo_image.get_height() // 2
+    game_logo_image = pygame.transform.scale(game_logo_image, (logo_width, logo_height))
+    game_logo_image_rect = game_logo_image.get_rect()
+    game_logo_image_rect.centerx = screen.get_rect().centerx - 10
+    game_logo_image_rect.centery = screen.get_rect().centery - 200
+
+    # Load the background image
+    background_image = pygame.image.load("Game_Art/christmas_bg.png")
+    
+    # Scale the background image to fit the screen size
+    background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
+
+
     # Load button images
     game_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
 
@@ -33,7 +51,7 @@ def main(screen):
     text_color = (0, 0, 0)
 
     memory_cards_button_text = font.render("Play Memory Cards", True, text_color)
-    shooter_button_text = font.render("Play Space Shooter", True, text_color)
+    shooter_button_text = font.render("Play Space Defender", True, text_color)
     simon_says_button_text = font.render("Play Simon Says", True, text_color)
     whack_a_mole_button_text = font.render("Play Whack a Mole", True, text_color)
 
@@ -56,11 +74,11 @@ def main(screen):
                 elif shooter_button_rect.collidepoint(mouse_pos):
                     Shooter.shooter.main_menu(screen)
                 elif simon_says_button_rect.collidepoint(mouse_pos):
-                    print("Simon Says button clicked!")
                     SimonSays.simon_says.main_game()
                 elif whack_a_mole_button_rect.collidepoint(mouse_pos):
-                    pass
+                    WhackAMole.whack_a_mole.main_game()
 
+        screen.blit(background_image, (0, 0))
 
         # Draw the buttons
         screen.blit(game_button_image, memory_cards_button_rect.topleft)
@@ -73,6 +91,9 @@ def main(screen):
         screen.blit(shooter_button_text, shooter_text_rect)
         screen.blit(simon_says_button_text, simon_says_text_rect)
         screen.blit(whack_a_mole_button_text, whack_a_mole_text_rect)
+        
+        # Draw the game logo
+        screen.blit(game_logo_image, game_logo_image_rect)
 
         # Update the display
         pygame.display.flip()
