@@ -18,14 +18,14 @@ def main_game(player_name):
     def initialize_game():
     # Load images and assign identifiers
         images = {
-            "bauble": pygame.image.load("./MemoryCards/images/bauble.png"),
-            "gingerbread": pygame.image.load("./MemoryCards/images/gingerbread.png"),
-            "holly": pygame.image.load("./MemoryCards/images/holly.png"),
-            "milk_and_cookies": pygame.image.load("./MemoryCards/images/milk_and_cookies.png"),
-            "present": pygame.image.load("./MemoryCards/images/present.png"),
-            "santas_hat": pygame.image.load("./MemoryCards/images/santas_hat.png"),
-            "wreath": pygame.image.load("./MemoryCards/images/wreath.png"),
-            "xmasTree": pygame.image.load("./MemoryCards/images/xmasTree.png"),
+            "apple": pygame.image.load("./MemoryCards/images/apple.png"),
+            "banana": pygame.image.load("./MemoryCards/images/banana.png"),
+            "blueberry": pygame.image.load("./MemoryCards/images/blueberry.png"),
+            "eggplant": pygame.image.load("./MemoryCards/images/eggplant.png"),
+            "grape": pygame.image.load("./MemoryCards/images/grape.png"),
+            "lime": pygame.image.load("./MemoryCards/images/lemon.png"),
+            "orange": pygame.image.load("./MemoryCards/images/orange.png"),
+            "pumpkin": pygame.image.load("./MemoryCards/images/pumpkin.png"),
         }
 
         # Define grid properties
@@ -50,8 +50,7 @@ def main_game(player_name):
             x = col * (card_width + spacing) + spacing
             y = row * (card_height + spacing) + spacing + top_padding
             identifier, image = pairs[i]
-            backImage = pygame.image.load("MemoryCards/images/xmas_card_back.png")
-            card = Card(x, y, card_width, card_height, image, identifier, backImage)
+            card = Card(x, y, card_width, card_height, image, identifier)
             cards.append(card)
         return cards
 
@@ -130,5 +129,3 @@ def main_game(player_name):
         clock.tick(60)  # limits FPS to 60
 
     pygame.quit()
-
-

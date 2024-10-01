@@ -93,7 +93,7 @@ def main(screen, player_name):
                 elif simon_says_button_rect.collidepoint(mouse_pos):
                     SimonSays.simon_says.main_game()
                 elif whack_a_mole_button_rect.collidepoint(mouse_pos):
-                    WhackAMole.whack_a_mole.main_game(player_name)
+                    WhackAMole.whack_a_mole.main_game()
                 elif leaderboard_button_rect.collidepoint(mouse_pos):
                     leaderboard.display_leaderboard_menu(screen)
                 elif change_name_button_rect.collidepoint(mouse_pos):
