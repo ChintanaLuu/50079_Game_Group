@@ -5,6 +5,8 @@ import MemoryCards.memory_cards
 import SimonSays.simon_says
 import Shooter.shooter
 import WhackAMole.whack_a_mole
+import leaderboard
+import player
 
 def main(screen):
 

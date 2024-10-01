@@ -39,3 +39,46 @@ def display_leaderboard(screen, game_name):
 
     pygame.display.flip()
     pygame.time.wait(3000)  # Display for 3 seconds
+
+def display_leaderboard_menu(screen):
+    """Display the leaderboard menu where the player can choose which game's leaderboard to view."""
+    font = pygame.font.Font(None, 25)
+    text_color = (0, 0, 0)
+
+    # Define buttons for each game's leaderboard
+    game1_button = pygame.Rect(200, 200, 200, 50)
+    game2_button = pygame.Rect(200, 300, 200, 50)
+    game3_button = pygame.Rect(200, 400, 200, 50)
+
+    game1_text = font.render("Memory Cards Leaderboard", True, text_color)
+    game2_text = font.render("Space Defender Leaderboard", True, text_color)
+    game3_text = font.render("Simon Says Leaderboard", True, text_color)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if game1_button.collidepoint(mouse_pos):
+                    display_leaderboard(screen, "game1")  # View Memory Cards leaderboard
+                elif game2_button.collidepoint(mouse_pos):
+                    display_leaderboard(screen, "game2")  # View Space Defender leaderboard
+                elif game3_button.collidepoint(mouse_pos):
+                    display_leaderboard(screen, "game3")  # View Simon Says leaderboard
+
+        # Clear the screen
+        screen.fill((0, 0, 0))
+
+        # Draw buttons
+        pygame.draw.rect(screen, (255, 255, 255), game1_button)
+        pygame.draw.rect(screen, (255, 255, 255), game2_button)
+        pygame.draw.rect(screen, (255, 255, 255), game3_button)
+
+        # Draw text
+        screen.blit(game1_text, game1_button.topleft)
+        screen.blit(game2_text, game2_button.topleft)
+        screen.blit(game3_text, game3_button.topleft)
+
+        pygame.display.flip()
