@@ -2,7 +2,7 @@ import json
 import pygame
 import sys
 from Shooter.GameScreen import game_screen
-
+from Project import main
 
 
 leaderboard = []
@@ -249,7 +249,6 @@ def main_menu(screen):
                         pygame.mixer.music.stop()
                         screen.fill((0, 0, 0))
                         pygame.display.flip()
-                        from Project import main
                         main(screen)
                         return
                         

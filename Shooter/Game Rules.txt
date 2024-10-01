@@ -1,4 +1,0 @@
-Press left to move left
-Press Right to move right
-Press j to shoot
-Press Start Game to play
