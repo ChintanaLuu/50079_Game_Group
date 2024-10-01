@@ -111,7 +111,7 @@ def main_game(player_name):
         # Check if the board is cleared
         if not cards:
             # Update the leaderboard with the player's name and the number of tries
-            update_leaderboard(player_name, tries, game_name)
+            update_leaderboard(player_name, tries, game_name, scoring_type="lowest")
 
             # Display a message or wait a bit before restarting
             pygame.time.wait(1000)

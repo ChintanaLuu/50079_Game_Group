@@ -18,27 +18,45 @@ def save_leaderboard(leaderboard, game_name):
     with open(leaderboard_file, "w") as f:
         json.dump(leaderboard, f)
 
-def update_leaderboard(player_name, tries, game_name):
-    """Update the leaderboard with the player's score for a specific game."""
+def update_leaderboard(player_name, score, game_name, scoring_type="lowest"):
+    """
+    Update the leaderboard with the player's score for a specific game.
+    
+    scoring_type: 
+    - "lowest": lower scores are better (Memory Match game).
+    - "highest": higher scores are better (Whack-a-Mole, Space Shooter).
+    """
     leaderboard = load_leaderboard(game_name)
-    leaderboard.append({"name": player_name, "tries": tries})
-    leaderboard = sorted(leaderboard, key=lambda x: x["tries"])  # Sort by number of tries
+    leaderboard.append({"name": player_name, "score": score})
+
+    # Sort based on the scoring type
+    if scoring_type == "highest":
+        leaderboard = sorted(leaderboard, key=lambda x: x["score"], reverse=True)
+    else:
+        leaderboard = sorted(leaderboard, key=lambda x: x["score"])
+
     save_leaderboard(leaderboard, game_name)
 
-def display_leaderboard(screen, game_name):
+def display_leaderboard(screen, game_name, scoring_type="lowest"):
     """Display the leaderboard for a specific game on the screen."""
     leaderboard = load_leaderboard(game_name)
     font = pygame.font.Font(None, 36)
     y_offset = 100
+    
     # Load the background image
     background_image = pygame.image.load("Game_Art/christmas_bg.png")
-    
-    # Scale the background image to fit the screen size
     background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
-    # Display the top 5 players for the specific game
+    # Display the leaderboard
+    screen.blit(background_image, (0, 0))
+    
     for index, entry in enumerate(leaderboard[:5]):
-        name_text = font.render(f"{index + 1}. {entry['name']} - {entry['tries']} tries", True, (255, 255, 255))
+        if scoring_type == "highest":
+            text = f"{index + 1}. {entry['name']} - {entry['score']} points"
+        else:
+            text = f"{index + 1}. {entry['name']} - {entry['score']} tries"
+        
+        name_text = font.render(text, True, (255, 255, 255))
         screen.blit(name_text, (200, y_offset))
         y_offset += 50
 
@@ -93,11 +111,11 @@ def display_leaderboard_menu(screen):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if game1_button_rect.collidepoint(mouse_pos):
-                    display_leaderboard(screen, "memory_match")  # View Memory Cards leaderboard
+                    display_leaderboard(screen, "memory_match", scoring_type="lowest")  # View Memory Cards leaderboard
                 elif game2_button_rect.collidepoint(mouse_pos):
-                    display_leaderboard(screen, "space_defender")  # View Space Defender leaderboard
+                    display_leaderboard(screen, "space_defender", scoring_type="highest")  # View Space Defender leaderboard
                 elif game3_button_rect.collidepoint(mouse_pos):
-                    display_leaderboard(screen, "whack_a_mole")  # View Simon Says leaderboard
+                    display_leaderboard(screen, "whack_a_mole", scoring_type="highest")  # View Simon Says leaderboard
 
         screen.blit(background_image, (0, 0))
 
