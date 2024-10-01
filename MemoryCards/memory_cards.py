@@ -1,6 +1,8 @@
 import pygame
 import random
-from MemoryCards.card import Card
+import os
+import json
+from card import Card
 
 
 def main_game():
