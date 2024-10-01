@@ -78,7 +78,7 @@ def display_leaderboard_menu(screen):
 
     game1_text = font.render("Memory Cards", True, text_color)
     game2_text = font.render("Space Defender", True, text_color)
-    game3_text = font.render("Simon Says", True, text_color)
+    game3_text = font.render("Whack-A-Mole", True, text_color)
 
     game1_button_text_rect = game1_text.get_rect(center=game1_button_rect.center)
     game2_button_text_rect = game2_text.get_rect(center=game2_button_rect.center)
@@ -93,11 +93,11 @@ def display_leaderboard_menu(screen):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if game1_button_rect.collidepoint(mouse_pos):
-                    display_leaderboard(screen, "game1")  # View Memory Cards leaderboard
+                    display_leaderboard(screen, "memory_match")  # View Memory Cards leaderboard
                 elif game2_button_rect.collidepoint(mouse_pos):
-                    display_leaderboard(screen, "game2")  # View Space Defender leaderboard
+                    display_leaderboard(screen, "space_defender")  # View Space Defender leaderboard
                 elif game3_button_rect.collidepoint(mouse_pos):
-                    display_leaderboard(screen, "game3")  # View Simon Says leaderboard
+                    display_leaderboard(screen, "whack_a_mole")  # View Simon Says leaderboard
 
         screen.blit(background_image, (0, 0))
 

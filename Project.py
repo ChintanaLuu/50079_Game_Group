@@ -87,7 +87,7 @@ def main(screen, player_name):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if memory_cards_button_rect.collidepoint(mouse_pos):
-                    MemoryCards.memory_cards.main_game()
+                    MemoryCards.memory_cards.main_game(player_name)
                 elif shooter_button_rect.collidepoint(mouse_pos):
                     Shooter.shooter.main_menu(screen)
                 elif simon_says_button_rect.collidepoint(mouse_pos):

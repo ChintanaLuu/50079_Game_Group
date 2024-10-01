@@ -3,10 +3,10 @@ import random
 import os
 import json
 from MemoryCards.card import Card
+from leaderboard import update_leaderboard
 
 
-
-def main_game():
+def main_game(player_name):
     print(pygame.ver)
 
     # pygame setup
@@ -66,6 +66,8 @@ def main_game():
     first_flipped_card = None
     second_flipped_card = None
     tries = 0  # Counter for the number of attempts
+    game_name = "memory_match"  # Identifier for this game in the leaderboard
+
     while running:
         # poll for events
         # pygame.QUIT event means the user clicked X to close your window
@@ -108,6 +110,9 @@ def main_game():
 
         # Check if the board is cleared
         if not cards:
+            # Update the leaderboard with the player's name and the number of tries
+            update_leaderboard(player_name, tries, game_name)
+
             # Display a message or wait a bit before restarting
             pygame.time.wait(1000)
             cards = initialize_game()
