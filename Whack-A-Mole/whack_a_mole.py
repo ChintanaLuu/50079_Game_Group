@@ -30,10 +30,12 @@ font = pygame.font.SysFont(None,55)
 # windowHeight = 1080
 # middleSpawnX = windowWidth/2
 # middleSpawnY = windowHeight/2
-# leftSpawnX = middleSpawnX/-2 #??
+# leftSpawnX = middleSpawnX/-2.left
+
+
 # spawnDict = {0:(middleSpawnX, middleSpawnY)}
 
-spawnDict = {0:(100, 200), 1:(450, 200), 2:(800, 200), 3:(100, 500), 4:(450, 500), 5:(800, 500)}
+spawnDict = {0:(100, 100), 1:(450, 100), 2:(800, 100), 3:(100, 250), 4:(450, 250), 5:(800, 250)}
 
 # Mole Setup
 active_mole_position = None
@@ -52,13 +54,13 @@ screen = pygame.display.set_mode((windowWidth, windowHeight))
 # Backgrounds Setup
 xmas_mode = True # SHOULD BE TRUE FOR CHRISTMAS MODE!!
 xmas_bg_surf = pygame.image.load('Game_Art/christmas_bg.png')
-xmas_bg_resized = pygame.transform.smoothscale_by(xmas_bg_surf, (0.8, 0.8))
-xmas_bg_rect = xmas_bg_resized.get_rect(topleft = (0,0))
+xmas_bg_resized = pygame.transform.smoothscale_by(xmas_bg_surf, (0.6, 0.8)) # 0.8 width, 0.8 height
+xmas_bg_rect = xmas_bg_resized.get_rect(topleft=(0,0))
 
 
 regular_bg_surf = pygame.image.load('Game_Art/regular_bg.png')
-regular_bg_resized = pygame.transform.smoothscale_by(regular_bg_surf, (0.8, 0.8))
-regular_bg_rect = regular_bg_resized.get_rect(topleft = (0,0))
+regular_bg_resized = pygame.transform.smoothscale_by(regular_bg_surf, (0.75, 0.8))
+regular_bg_rect = regular_bg_resized.get_rect(topleft=(-130,0))
 
 
 
@@ -98,7 +100,6 @@ while True:
 
                 if xmas_mode == True:
                     grinch_death = pygame.mixer.Sound('Game_Sounds/grinch_hit_sound.WAV')
-                    # pygame.mixer.Sound.set_volume(grinch_death, 1)
                     pygame.mixer.Sound.play(grinch_death)
 
                 else:
@@ -121,7 +122,6 @@ while True:
 
         #Manu: this condition removes moles if not clicked after 3 seconds 
         if active_mole_position and (Game_time - mole_spawn_time > 3000):
-                moleGroup.remove(Mole(xmas_mode, active_mole_position))
                 active_mole_position = None # Allow mole to be spawned again.
 
 
@@ -131,7 +131,7 @@ while True:
 
             if active_mole_position:
                 # Draw group onto screen.
-                moleGroup.draw(screen) # THE LOCATION OF THE MOLE DOES NOT RESET AFTER BEING DRAWN! MOLE KEEPS SPAWNING IN SAME PLACE EVERY TIME!
+                moleGroup.draw(screen)
                 moleGroup.update(pygame.event.get()) # Updates mole animation and checks if mole has been hit.
 
         else:
