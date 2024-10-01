@@ -1,4 +1,6 @@
-def main_game():
+from leaderboard import update_leaderboard
+
+def main_game(player_name):
     # Import pygame library
     import pygame
     from sys import exit
@@ -172,8 +174,13 @@ def main_game():
                 final_score_surf = font.render(f"Times Up! Final Score: {points}", True, (0,0,0))
                 final_score_rect = final_score_surf.get_rect(topleft = (150,300))
                 screen.blit(final_score_surf, final_score_rect)
-                #pygame.time.wait(5000)
-                
+                # Update leaderboard
+                update_leaderboard(player_name, points, "whack_a_mole", scoring_type="highest")
+
+                pygame.display.flip()
+                pygame.time.wait(3000)  # Wait for a few seconds after game ends
+                return  # Exit the game loop after showing final score and updating leaderboard
+                    
         
 
         # Update display screen.
