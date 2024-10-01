@@ -2,6 +2,7 @@ import pygame
 import sys
 from SimonSays.name_handler import get_player_names, choose_random_referee, draw_text
 from SimonSays.command_handler import get_commands, pick_commands_for_round
+from Project import main
 
 pygame.init()
 
@@ -64,10 +65,10 @@ def game_loop(players, referee, commands_for_round):
                     if resume_button.is_clicked(pos):
                         paused = False
                     if exit_button.is_clicked(pos):
-                        pygame.quit()
-                        sys.exit()
+                        main(screen)
+                        return
                     if restart_button.is_clicked(pos):
-                        main()  
+                        main_game()  
 
         if not paused:
             # Display referee and current command
@@ -117,8 +118,8 @@ def start_new_round():
     game_loop(players, referee, commands_for_round)
 
 # Main function
-def main():
+def main_game():
     start_new_round()
 
 if __name__ == "__main__":
-    main()
+    main_game()

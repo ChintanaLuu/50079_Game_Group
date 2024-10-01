@@ -74,7 +74,7 @@ def main(screen):
                 elif shooter_button_rect.collidepoint(mouse_pos):
                     Shooter.shooter.main_menu(screen)
                 elif simon_says_button_rect.collidepoint(mouse_pos):
-                    SimonSays.simon_says.main()
+                    SimonSays.simon_says.main_game()
                 elif whack_a_mole_button_rect.collidepoint(mouse_pos):
                     WhackAMole.whack_a_mole.main_game()
 
