@@ -41,7 +41,7 @@ def load_leaderboard():
 
 def load_game_rules():
     try:
-        with open("Game Rules.txt", "r") as file:
+        with open("Shooter/GameRules.txt", "r") as file:
             game_rules = file.read().splitlines()
     except FileNotFoundError:
         game_rules = ["Game rules not found!"]
