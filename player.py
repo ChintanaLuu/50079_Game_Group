@@ -7,9 +7,15 @@ def get_player_name(screen, current_name=""):
     player_name = current_name  # Start with the current name if available
     input_active = True
 
+    # Load the background image
+    background_image = pygame.image.load("Game_Art/christmas_bg.png")
+    
+    # Scale the background image to fit the screen size
+    background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
+
     while input_active:
-        screen.fill((0, 0, 0))  # Clear the screen
-        prompt_text = font.render(f"Enter your name and press Enter: {player_name}", True, (255, 255, 255))
+        screen.blit(background_image, (0, 0))
+        prompt_text = font.render(f"Enter your name and press Enter: {player_name}", True, (0, 0, 0))
         screen.blit(prompt_text, (200, 300))
         pygame.display.flip()
 

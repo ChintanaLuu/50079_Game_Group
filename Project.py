@@ -8,7 +8,7 @@ import WhackAMole.whack_a_mole
 import leaderboard
 import player
 
-def main(screen):
+def main(screen, player_name):
 
     #Load the game logo
     game_logo_image = pygame.image.load("Logo.PNG")
@@ -25,7 +25,6 @@ def main(screen):
     # Scale the background image to fit the screen size
     background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
-
     # Load button images
     game_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
 
@@ -41,7 +40,7 @@ def main(screen):
     base_y = 320  # Starting Y position for the first button
     button_spacing = 75  # Space between each button 
     
-    # Set positions of the buttons (X remains the same, Y changes for each button)
+    # Set positions of the buttons 
     memory_cards_button_rect.x = screen.get_width() / 2.5
     memory_cards_button_rect.y = base_y  # First button position
 
@@ -95,10 +94,10 @@ def main(screen):
                     SimonSays.simon_says.main_game()
                 elif whack_a_mole_button_rect.collidepoint(mouse_pos):
                     WhackAMole.whack_a_mole.main_game()
-                # elif leaderboard_button_rect.collidepoint(mouse_pos):
-                #     display_leaderboard_menu(screen)
-                # elif change_name_button_rect.collidepoint(mouse_pos):
-                #     player_name = get_player_name(screen, player_name)
+                elif leaderboard_button_rect.collidepoint(mouse_pos):
+                    leaderboard.display_leaderboard_menu(screen)
+                elif change_name_button_rect.collidepoint(mouse_pos):
+                    player_name = player.get_player_name(screen, player_name)
 
         screen.blit(background_image, (0, 0))
 
@@ -140,5 +139,8 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("FUN-ctional Fitness Games")
 
+    # Get the player's initial name
+    player_name = player.get_player_name(screen)
+
     # Start the main menu
-    main(screen)
+    main(screen, player_name)

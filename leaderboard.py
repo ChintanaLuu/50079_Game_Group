@@ -2,6 +2,7 @@
 import json
 import os
 import pygame
+import sys
 
 def load_leaderboard(game_name):
     """Load the leaderboard for a specific game from a JSON file."""
@@ -29,7 +30,11 @@ def display_leaderboard(screen, game_name):
     leaderboard = load_leaderboard(game_name)
     font = pygame.font.Font(None, 36)
     y_offset = 100
-    screen.fill((0, 0, 0))  # Clear screen with black
+    # Load the background image
+    background_image = pygame.image.load("Game_Art/christmas_bg.png")
+    
+    # Scale the background image to fit the screen size
+    background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
     # Display the top 5 players for the specific game
     for index, entry in enumerate(leaderboard[:5]):
@@ -45,40 +50,65 @@ def display_leaderboard_menu(screen):
     font = pygame.font.Font(None, 25)
     text_color = (0, 0, 0)
 
-    # Define buttons for each game's leaderboard
-    game1_button = pygame.Rect(200, 200, 200, 50)
-    game2_button = pygame.Rect(200, 300, 200, 50)
-    game3_button = pygame.Rect(200, 400, 200, 50)
+    # Load the background image
+    background_image = pygame.image.load("Game_Art/christmas_bg.png")
+    
+    # Scale the background image to fit the screen size
+    background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
-    game1_text = font.render("Memory Cards Leaderboard", True, text_color)
-    game2_text = font.render("Space Defender Leaderboard", True, text_color)
-    game3_text = font.render("Simon Says Leaderboard", True, text_color)
+    # Load button images
+    game_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
+
+    # Define buttons for each game's leaderboard
+    game1_button_rect = game_button_image.get_rect()
+    game2_button_rect = game_button_image.get_rect()
+    game3_button_rect = game_button_image.get_rect()
+    
+    game1_button_rect.x = screen.get_width() / 2.5
+    game1_button_rect.y = 300  
+
+    game2_button_rect.x = screen.get_width() / 2.5
+    game2_button_rect.y = 400
+
+    game3_button_rect.x = screen.get_width() / 2.5
+    game3_button_rect.y = 500
+
+    font = pygame.font.Font(None, 25)
+    text_color = (0, 0, 0)
+
+    game1_text = font.render("Memory Cards", True, text_color)
+    game2_text = font.render("Space Defender", True, text_color)
+    game3_text = font.render("Simon Says", True, text_color)
+
+    game1_button_text_rect = game1_text.get_rect(center=game1_button_rect.center)
+    game2_button_text_rect = game2_text.get_rect(center=game2_button_rect.center)
+    game3_button_text_rect = game3_text.get_rect(center=game3_button_rect.center)
 
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if game1_button.collidepoint(mouse_pos):
+                if game1_button_rect.collidepoint(mouse_pos):
                     display_leaderboard(screen, "game1")  # View Memory Cards leaderboard
-                elif game2_button.collidepoint(mouse_pos):
+                elif game2_button_rect.collidepoint(mouse_pos):
                     display_leaderboard(screen, "game2")  # View Space Defender leaderboard
-                elif game3_button.collidepoint(mouse_pos):
+                elif game3_button_rect.collidepoint(mouse_pos):
                     display_leaderboard(screen, "game3")  # View Simon Says leaderboard
 
-        # Clear the screen
-        screen.fill((0, 0, 0))
+        screen.blit(background_image, (0, 0))
 
         # Draw buttons
-        pygame.draw.rect(screen, (255, 255, 255), game1_button)
-        pygame.draw.rect(screen, (255, 255, 255), game2_button)
-        pygame.draw.rect(screen, (255, 255, 255), game3_button)
+        screen.blit(game_button_image, game1_button_rect.topleft)
+        screen.blit(game_button_image, game2_button_rect.topleft)
+        screen.blit(game_button_image, game3_button_rect.topleft)
 
         # Draw text
-        screen.blit(game1_text, game1_button.topleft)
-        screen.blit(game2_text, game2_button.topleft)
-        screen.blit(game3_text, game3_button.topleft)
+        screen.blit(game1_text, game1_button_text_rect)
+        screen.blit(game2_text, game2_button_text_rect)
+        screen.blit(game3_text, game3_button_text_rect)
 
         pygame.display.flip()
