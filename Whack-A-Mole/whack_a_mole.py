@@ -10,7 +10,7 @@ from sprites import Mole
 clock = pygame.time.Clock()
 
 # Music
-pygame.mixer.music.load('Game_Sounds/whack_a_mole_music.WAV')
+pygame.mixer.music.load('Game_Sounds/regular_game_music.WAV')
 pygame.mixer.music.play(-1, 0.0, 1000)
 
 # Cursor
@@ -50,6 +50,33 @@ xmas_mode = True #None
 xmas_bg_surf = pygame.image.load('Game_Art/christmas_bg.png')
 xmas_bg_resized = pygame.transform.smoothscale_by(xmas_bg_surf, (0.8, 0.8))
 xmas_bg_rect = xmas_bg_resized.get_rect(topleft = (0,0))
+
+class Button:
+    def __init__(self, x, y, width, height, text, color, text_color):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = text
+        self.color = color
+        self.text_color = text_color
+
+    def draw(self, screen, font):
+        pygame.draw.rect(screen, self.color, self.rect)
+        text_surface = font.render(self.text, True, self.text_color)
+        screen.blit(text_surface, (self.rect.x + (self.rect.width - text_surface.get_width()) // 2,
+                                   self.rect.y + (self.rect.height - text_surface.get_height()) // 2))
+
+    def is_clicked(self, pos):
+        return self.rect.collidepoint(pos)
+
+# Define restart button
+restart_button = Button(400, 600, 200, 50, 'Restart', (0, 255, 0), (0, 0, 0))
+
+def reset_game():
+    global points, game_active, start_ticks, active_mole_position
+    points = 0
+    game_active = True
+    start_ticks = pygame.time.get_ticks()
+    active_mole_position = None
+    pygame.mixer.music.play(-1, 0.0, 1000)
 
 while True:
     Game_time= pygame.time.get_ticks()
@@ -97,7 +124,7 @@ while True:
         if xmas_mode == True:
             screen.blit(xmas_bg_resized, xmas_bg_rect)
 
-            draw_holes(spawnDict, screen)
+            draw_holes(spawnDict, screen,)
 
             # Draw the mole at the selected random location.
             if active_mole_position:
