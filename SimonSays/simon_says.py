@@ -1,7 +1,7 @@
 import pygame
 import sys
-from name_handler import get_player_names, choose_random_referee, draw_text
-from command_handler import get_commands, pick_commands_for_round
+from SimonSays.name_handler import get_player_names, choose_random_referee, draw_text
+from SimonSays.command_handler import get_commands, pick_commands_for_round
 
 pygame.init()
 

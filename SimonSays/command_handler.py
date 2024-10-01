@@ -1,7 +1,7 @@
 import pygame
 import random
 import sys
-from name_handler import draw_text
+from SimonSays.name_handler import draw_text
 
 # Function to get a list of commands from the referee
 def get_commands(screen, font, WHITE, BLACK):

@@ -3,9 +3,18 @@ import pygame
 from sys import exit
 import random
 #from pygame.image import load
+# Cursor
+from WhackAMole.mallet_cursor import draw_cursor
+# Sprites
+from WhackAMole.draw_assets import draw_holes
+from WhackAMole.sprites import Mole
+
+
+
+
 pygame.init()
 
-from sprites import Mole
+
 
 clock = pygame.time.Clock()
 
@@ -13,11 +22,7 @@ clock = pygame.time.Clock()
 pygame.mixer.music.load('Game_Sounds/regular_game_music.WAV')
 pygame.mixer.music.play(-1, 0.0, 1000)
 
-# Cursor
-from mallet_cursor import draw_cursor
 
-# Sprites
-from draw_assets import draw_holes
 
 # Define window size.
 windowWidth = 1024

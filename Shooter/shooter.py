@@ -1,6 +1,6 @@
 import pygame
 import sys
-from GameScreen import game_screen
+from Shooter.GameScreen import game_screen
 
 def main_menu(screen):
 
@@ -8,16 +8,16 @@ def main_menu(screen):
     pygame.mixer.init()
 
     # Load the music and loop it
-    pygame.mixer.music.load("FreeAssets/Sound/SpaceBackground.mp3")
+    pygame.mixer.music.load("Shooter/FreeAssets/Sound/SpaceBackground.mp3")
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
     # Load the sound for starting the game
-    start_game_sound = pygame.mixer.Sound("FreeAssets/Sound/StartGameSound.wav")
+    start_game_sound = pygame.mixer.Sound("Shooter/FreeAssets/Sound/StartGameSound.wav")
     start_game_sound.set_volume(0.3)
 
     #Load the game logo
-    game_logo_image = pygame.image.load("FreeAssets/Background/gameLogo.PNG")
+    game_logo_image = pygame.image.load("Shooter/FreeAssets/Background/gameLogo.PNG")
     logo_width = game_logo_image.get_width() // 2
     logo_height = game_logo_image.get_height() // 2
     game_logo_image = pygame.transform.scale(game_logo_image, (logo_width, logo_height))
@@ -28,9 +28,9 @@ def main_menu(screen):
     
 
     # Load button images
-    start_game_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
-    exit_game_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
-    set_difficulty_button_image = pygame.image.load("FreeAssets/UI/button/buttonLong_blue.png")
+    start_game_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
+    exit_game_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
+    set_difficulty_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
 
     # Get the size of the button images
     start_game_button_rect = start_game_button_image.get_rect()
@@ -77,7 +77,7 @@ def main_menu(screen):
 
         # Set the background to white for now, change later
 
-        background_imgage = pygame.image.load("FreeAssets/Background/background2.jpg")
+        background_imgage = pygame.image.load("Shooter/FreeAssets/Background/background2.jpg")
         screen.blit(background_imgage, (0,0))
 
         # Draw the button images
