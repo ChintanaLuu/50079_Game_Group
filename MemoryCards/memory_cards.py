@@ -59,43 +59,6 @@ def initialize_game():
         cards.append(card)
     return cards
 
-def load_leaderboard():
-    """Load the leaderboard from a JSON file."""
-    if not os.path.exists(leaderboard_file):
-        return []
-    with open(leaderboard_file, "r") as f:
-        return json.load(f)
-
-def save_leaderboard(leaderboard):
-    """Save the leaderboard to a JSON file."""
-    with open(leaderboard_file, "w") as f:
-        json.dump(leaderboard, f)
-
-def update_leaderboard(player_name, tries):
-    """Update the leaderboard with the player's score."""
-    leaderboard = load_leaderboard()
-    leaderboard.append({"name": player_name, "tries": tries})
-    leaderboard = sorted(leaderboard, key=lambda x: x["tries"])  # Sort by number of tries
-    save_leaderboard(leaderboard)
-
-def display_leaderboard(screen):
-    """Display the leaderboard on the screen."""
-    leaderboard = load_leaderboard()
-    
-    font = pygame.font.Font(None, 36)
-    y_offset = 100
-    # screen.fill((0, 0, 0))  # Clear screen with black
-    
-    # Display the leaderboard
-    for index, entry in enumerate(leaderboard[:5]):  # Show top 5 players
-        name_text = font.render(f"{index + 1}. {entry['name']} - {entry['tries']} tries", True, (255, 255, 255))
-        screen.blit(name_text, (200, y_offset))
-        y_offset += 50
-    
-    pygame.display.flip()
-    pygame.time.wait(3000)  # Display for 3 seconds
-
-
 
 # Game loop
 running = True
