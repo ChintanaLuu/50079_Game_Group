@@ -1,12 +1,10 @@
 import random
 import pygame
 import sys
-
+from leaderboard import update_leaderboard
 
 
 def game_screen(screen, difficulty, player_name):
-    from Shooter.shooter import update_leaderboard, save_leaderboard,load_leaderboard
-    load_leaderboard()
     
 
     # Initialize the mixer for music
@@ -178,7 +176,7 @@ def game_screen(screen, difficulty, player_name):
                 if exit_menu_button_pressed:
                     exit_menu_button_pressed = False
                     from Shooter.shooter import main_menu
-                    main_menu(screen)
+                    main_menu(screen, player_name)
 
                 if restart_button_pressed:
                     restart_button_pressed = False
@@ -237,9 +235,7 @@ def game_screen(screen, difficulty, player_name):
                 scroll_speed = 0
                 pygame.mixer_music.stop()
                 game_over_sound.play()
-                
-                update_leaderboard(player_name, score)
-                save_leaderboard()
+                update_leaderboard(player_name, score, "space_defender", scoring_type="highest")
 
         # Draw Scrolling background
         screen.blit(background_imgage, (0, scroll_y - background_height))

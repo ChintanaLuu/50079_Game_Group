@@ -47,21 +47,47 @@ def display_leaderboard(screen, game_name, scoring_type="lowest"):
     background_image = pygame.image.load("Game_Art/christmas_bg.png")
     background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
-    # Display the leaderboard
-    screen.blit(background_image, (0, 0))
-    
-    for index, entry in enumerate(leaderboard[:5]):
-        if scoring_type == "highest":
-            text = f"{index + 1}. {entry['name']} - {entry['score']} points"
-        else:
-            text = f"{index + 1}. {entry['name']} - {entry['score']} tries"
-        
-        name_text = font.render(text, True, (255, 255, 255))
-        screen.blit(name_text, (200, y_offset))
-        y_offset += 50
+    # Create a back button
+    back_button_image = pygame.image.load("Shooter/FreeAssets/UI/button/buttonLong_blue.png")
+    back_button_rect = back_button_image.get_rect()
+    back_button_rect.center = (screen.get_width() // 2, screen.get_height() - 100)
 
-    pygame.display.flip()
-    pygame.time.wait(3000)  # Display for 3 seconds
+
+    running = True
+    while running:
+        screen.blit(background_image, (0, 0))
+
+        # Display the leaderboard
+        for index, entry in enumerate(leaderboard[:5]):
+            if scoring_type == "highest":
+                text = f"{index + 1}. {entry['name']} - {entry['score']} points"
+            else:
+                text = f"{index + 1}. {entry['name']} - {entry['score']} tries"
+            
+            name_text = font.render(text, True, (0, 0, 0))
+            screen.blit(name_text, (200, y_offset + index * 50))
+
+        # Draw the back button
+        screen.blit(back_button_image, back_button_rect.topleft)
+
+        # Draw the back button text
+        back_button_text = font.render("Back", True, (0, 0, 0))
+        back_button_text_rect = back_button_text.get_rect(center=back_button_rect.center)
+        screen.blit(back_button_text, back_button_text_rect)
+
+        pygame.display.flip()
+
+        # Wait for user input
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+
+                # If the user clicks on the back button, exit the loop
+                if back_button_rect.collidepoint(mouse_pos):
+                    running = False
 
 def display_leaderboard_menu(screen):
     """Display the leaderboard menu where the player can choose which game's leaderboard to view."""

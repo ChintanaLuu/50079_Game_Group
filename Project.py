@@ -89,7 +89,7 @@ def main(screen, player_name):
                 if memory_cards_button_rect.collidepoint(mouse_pos):
                     MemoryCards.memory_cards.main_game(player_name)
                 elif shooter_button_rect.collidepoint(mouse_pos):
-                    Shooter.shooter.main_menu(screen)
+                    Shooter.shooter.main_menu(screen, player_name)
                 elif simon_says_button_rect.collidepoint(mouse_pos):
                     SimonSays.simon_says.main_game()
                 elif whack_a_mole_button_rect.collidepoint(mouse_pos):
