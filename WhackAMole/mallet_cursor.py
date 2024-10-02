@@ -21,3 +21,8 @@ def draw_cursor(gameMode):
 
             cursor = pygame.cursors.Cursor((50,100), cursor_surf) # Whole image size is (288, 152).
             pygame.mouse.set_cursor(cursor)
+
+# Reset mouse cursor to system default.
+def reset_cursor():
+    cursor = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW)
+    pygame.mouse.set_cursor(cursor)
