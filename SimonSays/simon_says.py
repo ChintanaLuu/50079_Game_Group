@@ -28,8 +28,8 @@ menu_rect = menu_bg.get_rect(topleft=(0,0))
 
 # Background
 xmas_bg = pygame.image.load("SimonSays/ChristmasAssets/bgChristmasLights.png")
-# xmas_bg_rz = pygame.transform.smoothscale(xmas_bg,(0.5, 0.5))
-# xmas_bg = xmas_bg_rz
+xmas_bg_rz = pygame.transform.smoothscale(xmas_bg,(screen.get_width(), screen.get_height() - 30)) # Fix height so it is not as stretched.
+xmas_bg = xmas_bg_rz
 xmas_bg_rect = xmas_bg.get_rect(topleft=(0,0))
 
 class Button:
@@ -90,7 +90,7 @@ def game_loop(players, referee, commands_for_round):
                 draw_text(screen, f"Simon Says: {command}", font, RED, 50, 100)
             else:
                 round_in_progress = False
-                draw_text(screen, "Round Over!", font, BLACK, 50, 150)
+                draw_text(screen, "Round Over!", font, YELLOW, 50, 150)
 
             current_command_index += 1 if current_command_index < len(commands_for_round) else 0
             pygame.time.wait(1000)  # Wait for 1 second between commands
