@@ -2,16 +2,23 @@ import pygame
 import sys
 import random
 
+# Menu
+menu_bg = pygame.image.load("SimonSays/ChristmasAssets/bgSnowyWindow.png")
+menu_rect = menu_bg.get_rect(topleft=(0,0))
+
+# Colour
+YELLOW = (255, 236, 101)
+
 #Function to get player names
 def get_player_names(screen, font, WHITE, BLACK):
     players = []
     input_active = True
     player_name = ''
     while input_active:
-        screen.fill(WHITE)
-        draw_text(screen, "Enter player names. Press Enter after each name.", font, BLACK, 50, 50)
-        draw_text(screen, "Leave blank and press Enter when done.", font, BLACK, 50, 80)
-        draw_text(screen, "Please Enter Player's Name: " + player_name, font, BLACK, 50, 150)
+        screen.blit(menu_bg, menu_rect)
+        draw_text(screen, "Enter player names. Press Enter after each name.", font, YELLOW, 50, 50)
+        draw_text(screen, "Leave blank and press Enter when done.", font, YELLOW, 50, 80)
+        draw_text(screen, "Please Enter Player's Name: " + player_name, font, YELLOW, 50, 150)
         y_offset = 200
         for name in players:
             draw_text(screen, name, font, BLACK, 50, y_offset)

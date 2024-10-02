@@ -19,6 +19,17 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+YELLOW = (255, 236, 101)
+
+# Menu
+menu_bg = pygame.image.load("SimonSays/ChristmasAssets/bgSnowyWindow.png")
+menu_rect = menu_bg.get_rect(topleft=(0,0))
+
+# Background
+xmas_bg = pygame.image.load("SimonSays/ChristmasAssets/bgChristmasLights.png")
+# xmas_bg_rz = pygame.transform.smoothscale(xmas_bg,(0.5, 0.5))
+# xmas_bg = xmas_bg_rz
+xmas_bg_rect = xmas_bg.get_rect(topleft=(0,0))
 
 class Button:
     def __init__(self, x, y, width, height, text, color, text_color):
@@ -28,7 +39,8 @@ class Button:
         self.text_color = text_color
 
     def draw(self, screen, font):
-        pygame.draw.rect(screen, self.color, self.rect)
+        # pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(xmas_bg, xmas_bg_rect)
         text_surface = font.render(self.text, True, self.text_color)
         screen.blit(text_surface, (self.rect.x + (self.rect.width - text_surface.get_width()) // 2,
                                    self.rect.y + (self.rect.height - text_surface.get_height()) // 2))
@@ -48,7 +60,7 @@ def game_loop(players, referee, commands_for_round):
     paused = False
 
     while round_in_progress:
-        screen.fill(WHITE)
+        screen.blit(xmas_bg, xmas_bg_rect)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -75,7 +87,7 @@ def game_loop(players, referee, commands_for_round):
             draw_text(screen, f"Referee: {referee}", font, BLACK, 50, 50)
             if current_command_index < len(commands_for_round):
                 command = commands_for_round[current_command_index]
-                draw_text(screen, f"Simon Says: {command}", font, BLACK, 50, 100)
+                draw_text(screen, f"Simon Says: {command}", font, YELLOW, 50, 100)
             else:
                 round_in_progress = False
                 draw_text(screen, "Round Over!", font, BLACK, 50, 150)
@@ -95,7 +107,7 @@ def game_loop(players, referee, commands_for_round):
         start_new_round()
 
 def draw_pause_menu():
-    screen.fill(WHITE)
+    screen.blit(menu_bg, menu_rect)
     draw_text(screen, "Game Paused", font, BLACK, 400, 200)
 
     resume_button.draw(screen, font)

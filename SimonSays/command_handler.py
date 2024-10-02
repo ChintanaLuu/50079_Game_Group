@@ -3,18 +3,25 @@ import random
 import sys
 from SimonSays.name_handler import draw_text
 
+# Menu
+menu_bg = pygame.image.load("SimonSays/ChristmasAssets/bgSnowyWindow.png")
+menu_rect = menu_bg.get_rect(topleft=(0,0))
+
+# Colour
+YELLOW = (255, 236, 101)
+
 # Function to get a list of commands from the referee
-def get_commands(screen, font, WHITE, BLACK):
+def get_commands(screen, font, WHITE, YELLOW):
     commands = []
     input_active = True
     current_command = ''
     
     while input_active:
-        screen.fill(WHITE)
-        draw_text(screen, "Please Enter Command: " + current_command, font, BLACK, 50, 150)
+        screen.blit(menu_bg, menu_rect)
+        draw_text(screen, "Please Enter Command: " + current_command, font, YELLOW, 50, 150)
         y_offset = 200
         for command in commands:
-            draw_text(screen, command, font, BLACK, 50, y_offset)
+            draw_text(screen, command, font, YELLOW, 50, y_offset)
             y_offset += 30
 
         for event in pygame.event.get():
