@@ -44,10 +44,10 @@ def game_screen(screen, difficulty, player_name):
     enemies = []
     enemy_spawn_interval = 1500
     last_enemy_spawn_time = pygame.time.get_ticks()
-    enemy_speed = 0.2
+    enemy_speed = 2
 
     if difficulty == "Easy Mode":
-        enemy_speed = 0.2
+        enemy_speed = 2
     elif difficulty == "Normal Mode":
         player.health = 3
     elif difficulty == "Hard Mode":
@@ -204,10 +204,10 @@ def game_screen(screen, difficulty, player_name):
                 enemy_x = random.randint(0, screen.get_width() - 64)
 
                 if difficulty == "Normal Mode":
-                    enemy_speed = random.uniform(0.3, 0.5)
+                    enemy_speed = random.uniform(3, 5)
                     enemy_spawn_interval = random.randint(700, 1300)
                 elif difficulty == "Hard Mode":
-                    enemy_speed = random.uniform(0.4, 0.6)
+                    enemy_speed = random.uniform(5, 7)
                     enemy_spawn_interval = random.randint(500, 1200)
             
                 enemies.append(Enemy(screen, enemy_x, 110, enemy_speed)) # Spawn monster.ypos at the city.
@@ -294,7 +294,7 @@ def game_screen(screen, difficulty, player_name):
 
 
         
-        score_text = font.render(f"Score: {score}", True, white)
+        score_text = font.render(f"Score: {score}", True, black)
         screen.blit(score_text, (40, screen.get_height() - 40))     
 
         pygame.display.flip()
@@ -317,7 +317,7 @@ class Player:
         self.health = 4
         self.health_image = pygame.image.load("Shooter/FreeAssets/UI/health/playerLife_xmas.png")
         self.health_image_spacing = 10
-        self.moveSpeed = 5
+        self.moveSpeed = 8
 
     def handle_input(self, event):
         if event.type == pygame.KEYDOWN:
@@ -404,7 +404,7 @@ class Bullet:
         self.x = x
         self.y = y
         self.screen = screen
-        self.speed = -0.5
+        self.speed = -5
 
     def move(self):
         self.y += self.speed
