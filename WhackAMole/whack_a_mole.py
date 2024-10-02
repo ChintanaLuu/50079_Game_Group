@@ -170,7 +170,10 @@ def main_game(player_name):
                 if exit_menu_button_pressed:
                     exit_menu_button_pressed = False
                     from Project import main
+                    reset_cursor()
+                    pygame.mixer.music.stop()
                     main(screen, player_name)
+                    
 
             # Handle game logic only if the game is not paused
             if not show_pause_menu and game_active:
@@ -228,7 +231,7 @@ def main_game(player_name):
 
         #Manu: displays the score of moles caught
             score_value = font.render(f"moles captured: {points}", True,(0,0,0))
-            score_position = score_value.get_rect(topleft = (20,20))
+            score_position = score_value.get_rect(topleft = (350,20))
             screen.blit(score_value,score_position)
 
             # Display game time left.
