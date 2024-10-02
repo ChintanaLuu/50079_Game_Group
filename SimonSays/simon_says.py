@@ -20,6 +20,7 @@ BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 236, 101)
+BLUE = (0,0,255)
 
 # Menu
 menu_bg = pygame.image.load("SimonSays/ChristmasAssets/bgSnowyWindow.png")
@@ -39,8 +40,7 @@ class Button:
         self.text_color = text_color
 
     def draw(self, screen, font):
-        # pygame.draw.rect(screen, self.color, self.rect)
-        screen.blit(xmas_bg, xmas_bg_rect)
+        pygame.draw.rect(screen, self.color, self.rect)
         text_surface = font.render(self.text, True, self.text_color)
         screen.blit(text_surface, (self.rect.x + (self.rect.width - text_surface.get_width()) // 2,
                                    self.rect.y + (self.rect.height - text_surface.get_height()) // 2))
@@ -84,10 +84,10 @@ def game_loop(players, referee, commands_for_round):
 
         if not paused:
             # Display referee and current command
-            draw_text(screen, f"Referee: {referee}", font, BLACK, 50, 50)
+            draw_text(screen, f"Referee: {referee}", font, BLUE, 50, 50)
             if current_command_index < len(commands_for_round):
                 command = commands_for_round[current_command_index]
-                draw_text(screen, f"Simon Says: {command}", font, YELLOW, 50, 100)
+                draw_text(screen, f"Simon Says: {command}", font, RED, 50, 100)
             else:
                 round_in_progress = False
                 draw_text(screen, "Round Over!", font, BLACK, 50, 150)
@@ -108,7 +108,8 @@ def game_loop(players, referee, commands_for_round):
 
 def draw_pause_menu():
     screen.blit(menu_bg, menu_rect)
-    draw_text(screen, "Game Paused", font, BLACK, 400, 200)
+    print("PAUSED DRAWN")
+    draw_text(screen, "Game Paused", font, GREEN, 400, 200)
 
     resume_button.draw(screen, font)
     exit_button.draw(screen, font)
@@ -117,11 +118,11 @@ def draw_pause_menu():
     pygame.display.flip()
 
 def start_new_round():
-    players = get_player_names(screen, font, WHITE, BLACK)
+    players = get_player_names(screen, font, WHITE, YELLOW)
 
     referee = choose_random_referee(players)
 
-    commands = get_commands(screen, font, WHITE, BLACK)
+    commands = get_commands(screen, font, WHITE, YELLOW)
 
     # Pick 5 random commands for this round
     commands_for_round = pick_commands_for_round(commands)
