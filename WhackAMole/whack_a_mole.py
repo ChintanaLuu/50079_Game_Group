@@ -47,7 +47,7 @@ def main_game(player_name):
     # Game Timer Setup
     game_active = True # For menu later.
     start_ticks = pygame.time.get_ticks()
-    game_time_limit = 10000 # 10 seconds.
+    game_time_limit = 10000 + start_ticks # 10 seconds.
 
     # Create app window.
     screen = pygame.display.set_mode((windowWidth, windowHeight))

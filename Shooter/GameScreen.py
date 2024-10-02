@@ -317,13 +317,14 @@ class Player:
         self.health = 4
         self.health_image = pygame.image.load("Shooter/FreeAssets/UI/health/playerLife_xmas.png")
         self.health_image_spacing = 10
+        self.moveSpeed = 5
 
     def handle_input(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                self.x_change = -0.5
+                self.x_change = -self.moveSpeed
             elif event.key == pygame.K_RIGHT:
-                self.x_change = 0.5
+                self.x_change = self.moveSpeed
             elif event.key == pygame.K_j:
                 bullet_x = self.x + (self.image.get_width() // 2) - 10
                 bullet_y = self.y
