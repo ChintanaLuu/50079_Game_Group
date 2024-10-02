@@ -2,7 +2,7 @@ import json
 import pygame
 import sys
 from Shooter.GameScreen import game_screen
-from Project import main
+
 
 
 

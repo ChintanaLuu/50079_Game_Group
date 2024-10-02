@@ -296,7 +296,7 @@ def game_screen(screen, difficulty, player_name):
 
 class Player:
     def __init__(self, screen):
-        self.image = pygame.image.load("Shooter/FreeAssets/PlayerCharacter/xmas_player.png")
+        self.image = pygame.image.load("Shooter/FreeAssets/PlayerCharacter/xmas_player_99x75_resize.png")
         self.x = 450
         self.y = 650
         self.x_change = 0

@@ -11,7 +11,7 @@ def get_commands(screen, font, WHITE, BLACK):
     
     while input_active:
         screen.fill(WHITE)
-        draw_text(screen, "Current Command: " + current_command, font, BLACK, 50, 150)
+        draw_text(screen, "Please Enter Command: " + current_command, font, BLACK, 50, 150)
         y_offset = 200
         for command in commands:
             draw_text(screen, command, font, BLACK, 50, y_offset)
