@@ -1,9 +1,9 @@
 import pygame
 import random
 from MemoryCards.card import Card
+from leaderboard import update_leaderboard
 
-
-def main_game():
+def main_game(player_name):
     print(pygame.ver)
 
     # pygame setup
@@ -207,6 +207,9 @@ def main_game():
 
         # Check if the board is cleared
         if not cards:
+            # Update the leaderboard
+            update_leaderboard(player_name, tries, "memory_match", scoring_type= "lowest")
+
             pygame.time.wait(1000)
             cards = initialize_game()
             tries = 0
