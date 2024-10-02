@@ -228,13 +228,13 @@ def main_menu(screen, player_name):
             screen.blit(start_game_button_image, (start_game_button_rect.x, start_game_button_rect.y))
             screen.blit(exit_game_button_image, (exit_game_button_rect.x, exit_game_button_rect.y))
             screen.blit(set_difficulty_button_image, (set_difficulty_button_rect.x, set_difficulty_button_rect.y))
-            screen.blit(game_rules_button_image,(game_rules_button_rect.x, game_rules_button_rect.y))
+            #screen.blit(game_rules_button_image,(game_rules_button_rect.x, game_rules_button_rect.y))
 
             # Draw the text on the buttons
             screen.blit(start_game_button_text, start_game_text_rect)
             screen.blit(exit_game_button_text, exit_game_text_rect)
             screen.blit(set_difficulty_button_text, set_difficulty_text_rect)
-            screen.blit(game_rules_button_text, game_rules_button_text_rect)
+            #screen.blit(game_rules_button_text, game_rules_button_text_rect)
 
             
 
@@ -245,13 +245,13 @@ def main_menu(screen, player_name):
             screen.blit(start_game_button_image, (start_game_button_rect.x, start_game_button_rect.y))
             screen.blit(exit_game_button_image, (exit_game_button_rect.x, exit_game_button_rect.y))
             screen.blit(set_difficulty_button_image, (set_difficulty_button_rect.x, set_difficulty_button_rect.y))
-            screen.blit(game_rules_button_image,(game_rules_button_rect.x, game_rules_button_rect.y))
+            #screen.blit(game_rules_button_image,(game_rules_button_rect.x, game_rules_button_rect.y))
 
             # Draw the text on the buttons
             screen.blit(start_game_button_text, start_game_text_rect)
             screen.blit(exit_game_button_text, exit_game_text_rect)
             screen.blit(set_difficulty_button_text, set_difficulty_text_rect)
-            screen.blit(game_rules_button_text, game_rules_button_text_rect)
+            #screen.blit(game_rules_button_text, game_rules_button_text_rect)
 
             
             
