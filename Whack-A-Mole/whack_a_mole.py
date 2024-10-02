@@ -10,7 +10,7 @@ clock = pygame.time.Clock()
 
 
 # Cursor
-from mallet_cursor import draw_cursor
+from mallet_cursor import draw_cursor, reset_cursor
 
 # Sprites
 from draw_assets import draw_holes
@@ -46,7 +46,7 @@ pygame.time.set_timer(mole_timer, 2000) # Set timer to every 2 seconds.
 # Game Timer Setup
 game_active = True # For menu later.
 start_ticks = pygame.time.get_ticks()
-game_time_limit = 20000 # 20 seconds.
+game_time_limit = 10000 # 10 seconds.
 
 # Create app window.
 screen = pygame.display.set_mode((windowWidth, windowHeight))
@@ -164,6 +164,10 @@ while True:
             game_active = False
             pygame.mixer.music.stop()
 
+            xmas_mode = None # STOP ANIMATING MALLET CURSOR.
+            # Reset cursor to default.
+            reset_cursor()
+
             # Draw end screen.
             pygame.Surface.fill(screen, (0,130,255))
 
@@ -173,6 +177,7 @@ while True:
             final_score_rect = final_score_surf.get_rect(topleft = (150,300))
             screen.blit(final_score_surf, final_score_rect)
             #pygame.time.wait(5000)
+
             
     
 
