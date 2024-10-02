@@ -45,7 +45,7 @@ def main_menu(screen, player_name):
     pygame.mixer.init()
 
     # Load the music and loop it
-    pygame.mixer.music.load("Shooter/FreeAssets/Sound/SpaceBackground.mp3")
+    pygame.mixer.music.load("Shooter/FreeAssets/Sound/xmas_menu_music.wav")
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 

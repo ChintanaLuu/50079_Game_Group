@@ -1,24 +1,19 @@
-# Import pygame library
-import pygame
-from sys import exit
-import random
-#from pygame.image import load
-# Cursor
-from WhackAMole.mallet_cursor import draw_cursor, reset_cursor
-
-# Sprites
-from WhackAMole.draw_assets import draw_holes
-from WhackAMole.sprites import Mole
-from leaderboard import update_leaderboard
-
 def main_game(player_name):
+    # Import pygame library
+    import pygame
+    from sys import exit
+    import random
+    #from pygame.image import load
+    # Cursor
+    from WhackAMole.mallet_cursor import draw_cursor, reset_cursor
+
+    # Sprites
+    from WhackAMole.draw_assets import draw_holes
+    from WhackAMole.sprites import Mole
+    from leaderboard import update_leaderboard
 
     pygame.init()
-
-
     clock = pygame.time.Clock()
-
-
 
     # Mole.onclick
 
@@ -271,7 +266,6 @@ def main_game(player_name):
                 return  # Exit the game and return to the menu
                 
         
-
         # Draw the pause button and pause menu if needed
         screen.blit(pause_button_image, pause_button_rect)
         if show_pause_menu:

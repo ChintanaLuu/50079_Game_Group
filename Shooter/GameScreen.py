@@ -6,12 +6,13 @@ from leaderboard import update_leaderboard
 
 def game_screen(screen, difficulty, player_name):
     
+    # Xmas Mode:
 
     # Initialize the mixer for music
     pygame.mixer.init()
     
     # Load the music and loop it
-    pygame.mixer.music.load("Shooter/FreeAssets/Sound/InGameMusic.wav")
+    pygame.mixer.music.load("Shooter/FreeAssets/Sound/xmas_game_music.mp3")
     pygame.mixer.music.set_volume(0.1)
     pygame.mixer.music.play(-1)
 
@@ -28,7 +29,12 @@ def game_screen(screen, difficulty, player_name):
     game_over_sound.set_volume(0.03)
 
     # Background
-    background_imgage = pygame.image.load("Shooter/FreeAssets/Background/background2.jpg")
+    background_imgage = pygame.image.load("Shooter/FreeAssets/Background/christmas_bg.png")
+    # Resize background.
+    # background_image = pygame.transform.smoothscale(background_image, (screen.get_width(), screen.get_height()))
+    background_resized = pygame.transform.smoothscale(background_imgage, (1024, 768))
+    background_imgage = background_resized
+    background_rect = background_imgage.get_rect(topleft=(0,0))
     background_height = background_imgage.get_height()
 
     # Player
@@ -187,9 +193,10 @@ def game_screen(screen, difficulty, player_name):
             player.update_position()
             player.update_bullets()
 
-            scroll_y += scroll_speed
-            if scroll_y >= background_height:
-                scroll_y = 0
+            # Scroll is for regular space mode.
+            # scroll_y += scroll_speed
+            # if scroll_y >= background_height:
+            #     scroll_y = 0
 
             # Only spawn enemies when the game is not paused
             current_time = pygame.time.get_ticks()
@@ -203,7 +210,7 @@ def game_screen(screen, difficulty, player_name):
                     enemy_speed = random.uniform(0.4, 0.6)
                     enemy_spawn_interval = random.randint(500, 1200)
             
-                enemies.append(Enemy(screen, enemy_x, -64, enemy_speed))
+                enemies.append(Enemy(screen, enemy_x, 110, enemy_speed)) # Spawn monster.ypos at the city.
                 last_enemy_spawn_time = current_time
 
 
@@ -237,9 +244,13 @@ def game_screen(screen, difficulty, player_name):
                 game_over_sound.play()
                 update_leaderboard(player_name, score, "space_defender", scoring_type="highest")
 
+        
+        # Draw Static background
+        screen.blit(background_imgage, background_rect) # Monsters will spawn from the town.
+
         # Draw Scrolling background
-        screen.blit(background_imgage, (0, scroll_y - background_height))
-        screen.blit(background_imgage, (0, scroll_y))
+        # screen.blit(background_imgage, (0, scroll_y - background_height))
+        # screen.blit(background_imgage, (0, scroll_y))
 
         for enemy in enemies:
             enemy.draw()
@@ -304,7 +315,7 @@ class Player:
         self.bullets = []
         self.bullet_sound = pygame.mixer.Sound("Shooter/FreeAssets/Sound/shootingSound.wav")
         self.health = 4
-        self.health_image = pygame.image.load("Shooter/FreeAssets/UI/health/playerLife1_blue.png")
+        self.health_image = pygame.image.load("Shooter/FreeAssets/UI/health/playerLife_xmas.png")
         self.health_image_spacing = 10
 
     def handle_input(self, event):
@@ -362,7 +373,7 @@ class Player:
 
 class Enemy:
     def __init__(self, screen, x, y, speed):
-        self.image = pygame.image.load("Shooter/FreeAssets/Enemies/enemyBlack1.png")
+        self.image = pygame.image.load("Shooter/FreeAssets/Enemies/christmas_enemy.png")
         self.x = x
         self.y = y
         self.screen = screen
@@ -385,7 +396,7 @@ class Enemy:
 
 class Bullet:
     def __init__(self, screen, x, y):
-        self.image = pygame.image.load("Shooter/FreeAssets/Bullets/4.png")
+        self.image = pygame.image.load("Shooter/FreeAssets/Bullets/player_xmas_bullet.png")
         bullet_width = self.image.get_width() // 2
         bullet_height = self.image.get_height() // 2
         self.image = pygame.transform.scale(self.image, (bullet_width, bullet_height))
