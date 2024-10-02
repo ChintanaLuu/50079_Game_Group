@@ -168,7 +168,7 @@ def main_game(player_name):
                 if exit_menu_button_pressed:
                     exit_menu_button_pressed = False
                     from Project import main
-                    main(screen)
+                    main(screen, player_name)
 
 
             # Check if the game is not paused

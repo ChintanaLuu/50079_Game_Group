@@ -107,7 +107,8 @@ def display_leaderboard_menu(screen):
     game1_button_rect = game_button_image.get_rect()
     game2_button_rect = game_button_image.get_rect()
     game3_button_rect = game_button_image.get_rect()
-    
+    back_button_rect = game_button_image.get_rect()
+
     game1_button_rect.x = screen.get_width() / 2.5
     game1_button_rect.y = 300  
 
@@ -117,16 +118,21 @@ def display_leaderboard_menu(screen):
     game3_button_rect.x = screen.get_width() / 2.5
     game3_button_rect.y = 500
 
+    back_button_rect.x = screen.get_width() / 2.5
+    back_button_rect.y = 600
+
     font = pygame.font.Font(None, 25)
     text_color = (0, 0, 0)
 
     game1_text = font.render("Memory Cards", True, text_color)
     game2_text = font.render("Space Defender", True, text_color)
     game3_text = font.render("Whack-A-Mole", True, text_color)
+    back_button_text = font.render("Back", True, text_color)
 
     game1_button_text_rect = game1_text.get_rect(center=game1_button_rect.center)
     game2_button_text_rect = game2_text.get_rect(center=game2_button_rect.center)
     game3_button_text_rect = game3_text.get_rect(center=game3_button_rect.center)
+    back_button_text_rect = back_button_text.get_rect(center=back_button_rect.center)
 
     running = True
     while running:
@@ -142,6 +148,8 @@ def display_leaderboard_menu(screen):
                     display_leaderboard(screen, "space_defender", scoring_type="highest")  # View Space Defender leaderboard
                 elif game3_button_rect.collidepoint(mouse_pos):
                     display_leaderboard(screen, "whack_a_mole", scoring_type="highest")  # View Simon Says leaderboard
+                elif back_button_rect.collidepoint(mouse_pos):
+                    running = False
 
         screen.blit(background_image, (0, 0))
 
@@ -149,10 +157,12 @@ def display_leaderboard_menu(screen):
         screen.blit(game_button_image, game1_button_rect.topleft)
         screen.blit(game_button_image, game2_button_rect.topleft)
         screen.blit(game_button_image, game3_button_rect.topleft)
+        screen.blit(game_button_image, back_button_rect.topleft)
 
         # Draw text
         screen.blit(game1_text, game1_button_text_rect)
         screen.blit(game2_text, game2_button_text_rect)
         screen.blit(game3_text, game3_button_text_rect)
+        screen.blit(back_button_text, back_button_text_rect)
 
         pygame.display.flip()
