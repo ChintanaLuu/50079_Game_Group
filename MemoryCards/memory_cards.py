@@ -102,7 +102,7 @@ def main_game(player_name):
         # Define grid properties
         rows = 4
         cols = 4
-        horizontalSpacing = 75
+        horizontalSpacing = 125
         spacing = 20
         top_padding = 50  # Add padding at the top
         card_width = (1024 - (cols + 1) * horizontalSpacing) / cols # Calculate the card width and height with spacing around them 
